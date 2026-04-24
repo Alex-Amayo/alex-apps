@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contact" description="Get in touch with Alex The App Guy — available for freelance and contract mobile development.">
+  <div class="mx-auto max-w-xl px-6 py-16">
+    <header class="mb-10">
+      <h1 class="mb-3 text-4xl font-bold tracking-tight text-zinc-900">Get In Touch</h1>
+      <p class="text-lg text-zinc-500">
+        Have a project in mind? I'd love to hear about it. Fill out the form below and I'll get back to you within 24 hours.
+      </p>
+    </header>
+
+    <!-- Replace YOUR_FORM_ID with your Formspree endpoint ID -->
+    <form
+      action="https://formspree.io/f/YOUR_FORM_ID"
+      method="POST"
+      class="flex flex-col gap-5"
+    >
+      <div>
+        <label for="name" class="mb-1.5 block text-sm font-medium text-zinc-700">
+          Your Name
+        </label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          required
+          placeholder="Jane Smith"
+          class="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="mb-1.5 block text-sm font-medium text-zinc-700">
+          Email Address
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          placeholder="jane@example.com"
+          class="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="mb-1.5 block text-sm font-medium text-zinc-700">
+          Message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows="6"
+          placeholder="Tell me about your project..."
+          class="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full rounded-full bg-sky-500 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
+      >
+        Send Message
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-zinc-400">
+      Or email me directly at
+      <a href="mailto:hello@alextheappguy.com" class="text-sky-500 hover:underline">
+        hello@alextheappguy.com
+      </a>
+    </p>
+  </div>
+</BaseLayout>

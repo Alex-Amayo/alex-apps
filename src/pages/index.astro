@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/projects";
+
+const featured = projects.filter((p) => p.featured);
+---
+
+<BaseLayout title="Home" description="Alex The App Guy — Mobile Developer. When You Need A Developer Who Delivers.">
+
+  <!-- Hero -->
+  <section class="bg-zinc-900 py-12">
+    <div class="mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
+      <!-- Avatar -->
+      <div class="mb-8 h-64 w-64 overflow-hidden rounded-full bg-zinc-800 ring-4 ring-zinc-700">
+        <img
+          src="/headshot.png"
+          alt="Alex The App Guy"
+          class="h-full w-full object-cover object-top"
+        />
+      </div>
+
+      <!-- Name & Tagline -->
+      <h1 class="mb-3 text-5xl font-bold tracking-tight text-white">
+        Alex The App Guy
+      </h1>
+      <p class="mb-10 max-w-xl text-xl leading-relaxed text-zinc-400">
+        When You Need A Developer Who Delivers.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/projects"
+          class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
+        >
+          View My Work
+        </a>
+        <a
+          href="/contact"
+          class="rounded-full border border-zinc-600 bg-transparent px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:border-zinc-400 hover:bg-zinc-800"
+        >
+          Get In Touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills strip -->
+  <section class="border-y border-zinc-100 bg-zinc-50 py-8">
+    <div class="mx-auto max-w-5xl px-6">
+      <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        {["React Native", "TypeScript", "Expo", "JavaScript", "Zustand", "Supabase", "Swift", "Kotlin"].map((skill) => (
+          <li class="text-sm font-medium text-zinc-500">{skill}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <div class="mb-10 flex items-end justify-between">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Featured Work</h2>
+        <p class="mt-1 text-sm text-zinc-500">A selection of recent mobile projects.</p>
+      </div>
+      <a href="/projects" class="text-sm font-medium text-sky-500 hover:text-sky-600 transition-colors">
+        See all projects →
+      </a>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((project) => (
+        <ProjectCard {...project} />
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA banner -->
+  <section class="bg-zinc-900 py-20">
+    <div class="mx-auto max-w-2xl px-6 text-center">
+      <h2 class="mb-3 text-3xl font-bold tracking-tight text-white">
+        Ready to build something great?
+      </h2>
+      <p class="mb-8 text-zinc-400">
+        I take on select freelance and contract work. Let's talk about your project.
+      </p>
+      <a
+        href="/contact"
+        class="rounded-full bg-sky-500 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
+      >
+        Start a Conversation
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>

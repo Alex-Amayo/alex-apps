@@ -1,0 +1,38 @@
+---
+const navLinks = [
+  { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
+const { pathname } = Astro.url;
+---
+
+<header class="sticky top-0 z-50 border-b border-zinc-200/60 bg-white/80 backdrop-blur-md">
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    <a href="/" class="text-base font-semibold tracking-tight text-zinc-900 hover:text-sky-500 transition-colors">
+      Alex The App Guy
+    </a>
+
+    <div class="flex items-center gap-6">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class={`text-sm font-medium transition-colors ${
+            pathname.startsWith(href)
+              ? "text-sky-500"
+              : "text-zinc-500 hover:text-zinc-900"
+          }`}
+        >
+          {label}
+        </a>
+      ))}
+      <a
+        href="/contact"
+        class="rounded-full bg-sky-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-sky-600"
+      >
+        Hire Me
+      </a>
+    </div>
+  </nav>
+</header>
