@@ -31,7 +31,7 @@ const featured = projects.filter((p) => p.featured);
       <!-- CTAs -->
       <div class="flex flex-wrap items-center justify-center gap-4">
         <a
-          href="/projects"
+          href="#featured-work"
           class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
         >
           View My Work
@@ -50,7 +50,7 @@ const featured = projects.filter((p) => p.featured);
   <section class="border-y border-zinc-100 bg-zinc-50 py-8">
     <div class="mx-auto max-w-5xl px-6">
       <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-        {["React Native", "TypeScript", "Expo", "JavaScript", "Zustand", "Supabase", "Swift", "Kotlin"].map((skill) => (
+        {["TypeScript", "React Native", "Swift", "Kotlin"].map((skill) => (
           <li class="text-sm font-medium text-zinc-500">{skill}</li>
         ))}
       </ul>
@@ -58,15 +58,10 @@ const featured = projects.filter((p) => p.featured);
   </section>
 
   <!-- Featured Projects -->
-  <section class="mx-auto max-w-5xl px-6 py-20">
-    <div class="mb-10 flex items-end justify-between">
-      <div>
-        <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Featured Work</h2>
-        <p class="mt-1 text-sm text-zinc-500">A selection of recent mobile projects.</p>
-      </div>
-      <a href="/projects" class="text-sm font-medium text-sky-500 hover:text-sky-600 transition-colors">
-        See all projects →
-      </a>
+  <section id="featured-work" class="mx-auto max-w-5xl px-6 py-20">
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Featured Work</h2>
+      <p class="mt-1 text-sm text-zinc-500">A selection of recent mobile projects.</p>
     </div>
 
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
