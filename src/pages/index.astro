@@ -9,27 +9,21 @@ const featured = projects.filter((p) => p.featured);
 <BaseLayout title="Home" description="Alex The App Guy — Mobile Developer. When You Need A Developer Who Delivers.">
 
   <!-- Hero -->
-  <section id="hero-section" class="relative overflow-hidden bg-zinc-950 py-20">
-
-    <!-- Atmosphere: radial bloom centered on avatar -->
-    <div id="bloom-main" class="pointer-events-none absolute h-[700px] w-[700px] rounded-full bg-sky-500/[0.09] blur-[110px]" style="top:0;left:50%;transform:translate(-50%,-33%)"></div>
-    <!-- Secondary warm bloom -->
-    <div id="bloom-secondary" class="pointer-events-none absolute h-[400px] w-[400px] rounded-full bg-indigo-500/[0.06] blur-[90px]" style="top:50%;left:33%;transform:translate(-50%,-50%)"></div>
-
-    <div class="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
+  <section class="bg-zinc-900 py-20">
+    <div class="mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
 
       <!-- Avatar — Apple Intelligence glow -->
       <div class="animate-fade-scale relative mb-8 h-64 w-64">
 
         <!-- Outer aura: blurred, large, behind everything -->
-        <div class="animate-ai-spin pointer-events-none absolute -inset-6 rounded-full opacity-50 blur-2xl"
+        <div class="animate-ai-spin pointer-events-none absolute -inset-3 rounded-full opacity-40 blur-xl"
              style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa)">
         </div>
 
         <!-- Sharp border ring: rotates, reveals edge via inset solid div -->
         <div class="animate-ai-spin absolute inset-0 rounded-full"
              style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa);padding:2.5px">
-          <div class="h-full w-full rounded-full bg-zinc-950"></div>
+          <div class="h-full w-full rounded-full bg-zinc-900"></div>
         </div>
 
         <!-- Image clipped inside the border -->
@@ -117,43 +111,5 @@ const featured = projects.filter((p) => p.featured);
       </a>
     </div>
   </section>
-
-<script>
-  const hero      = document.querySelector<HTMLElement>("#hero-section")!;
-  const bloomMain = document.querySelector<HTMLElement>("#bloom-main")!;
-  const bloomSec  = document.querySelector<HTMLElement>("#bloom-secondary")!;
-
-  // Normalized mouse position (0–1) relative to hero
-  let mx = 0.5, my = 0.5;
-
-  // Two independent lerp targets — main tracks cursor, secondary lags behind
-  let mainX = 0, mainY = 0;
-  let secX  = 0, secY  = 0;
-
-  hero.addEventListener("mousemove", (e: MouseEvent) => {
-    const r = hero.getBoundingClientRect();
-    mx = (e.clientX - r.left) / r.width;
-    my = (e.clientY - r.top)  / r.height;
-  });
-
-  // Reset gently on leave
-  hero.addEventListener("mouseleave", () => { mx = 0.5; my = 0.5; });
-
-  (function tick() {
-    requestAnimationFrame(tick);
-
-    // Main bloom: fast, ±160px travel from rest
-    mainX += ((mx - 0.5) * 320 - mainX) * 0.06;
-    mainY += ((my - 0.5) * 200 - mainY) * 0.06;
-    bloomMain.style.transform =
-      `translate(calc(-50% + ${mainX}px), calc(-33% + ${mainY}px))`;
-
-    // Secondary bloom: slower + smaller travel, feels like a shadow
-    secX += ((mx - 0.5) * 160 - secX) * 0.035;
-    secY += ((my - 0.5) * 120 - secY) * 0.035;
-    bloomSec.style.transform =
-      `translate(calc(-50% + ${secX}px), calc(-50% + ${secY}px))`;
-  })();
-</script>
 
 </BaseLayout>
