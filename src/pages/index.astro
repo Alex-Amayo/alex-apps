@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { projects } from "../data/projects";
 
-const featured = projects.filter((p) => p.featured);
+
 ---
 
 <BaseLayout title="Home" description="Alex Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
@@ -16,7 +16,7 @@ const featured = projects.filter((p) => p.featured);
       <div class="animate-fade-scale relative mb-8 h-64 w-64">
 
         <!-- Outer aura: blurred, large, behind everything -->
-        <div class="animate-ai-spin pointer-events-none absolute -inset-3 rounded-full opacity-40 blur-xl"
+        <div class="animate-ai-spin pointer-events-none absolute -inset-1 rounded-full opacity-40 blur-md"
              style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa)">
         </div>
 
@@ -88,7 +88,7 @@ const featured = projects.filter((p) => p.featured);
     </div>
 
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {featured.map((project) => (
+      {projects.map((project) => (
         <ProjectCard {...project} />
       ))}
     </div>

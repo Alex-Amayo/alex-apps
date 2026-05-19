@@ -6,7 +6,6 @@ export interface Project {
   playStore?: string;
   web?: string;
   github?: string;
-  featured?: boolean;
 }
 
 export const projects: Project[] = [
@@ -17,16 +16,6 @@ export const projects: Project[] = [
     tags: ["React Native", "TypeScript", "Expo", "Zustand", "Stripe"],
     appStore: "#",
     playStore: "#",
-    featured: true,
-  },
-  {
-    title: "TrailMate",
-    description:
-      "Offline-first hiking companion with turn-by-turn navigation, GPX route recording, and trail condition reports that work without cell service.",
-    tags: ["React Native", "TypeScript", "Expo", "MapLibre", "Supabase"],
-    appStore: "#",
-    playStore: "#",
-    featured: true,
   },
   {
     title: "PocketCoach",
@@ -36,34 +25,5 @@ export const projects: Project[] = [
     appStore: "#",
     playStore: "#",
     web: "#",
-    featured: true,
-  },
-  {
-    title: "NativeVault",
-    description:
-      "Secure credential storage app for iOS using a custom Swift native module to interface directly with the Keychain API beyond what React Native exposes.",
-    tags: ["React Native", "TypeScript", "Swift (Native Module)", "Keychain"],
-    appStore: "#",
-  },
-  {
-    title: "DriveLog",
-    description:
-      "Mileage and expense tracker with Android Auto integration powered by a Kotlin native module — handles IPC and CarAppService bindings that RN can't reach.",
-    tags: [
-      "React Native",
-      "TypeScript",
-      "Kotlin (Native Module)",
-      "Android Auto",
-    ],
-    playStore: "#",
-  },
-  {
-    title: "Folio",
-    description:
-      "Portfolio builder with fluid gesture navigation, physics-based spring animations via Reanimated, and a custom Skia canvas for drawing and signature capture.",
-    tags: ["React Native", "TypeScript", "Expo", "Reanimated", "Skia"],
-    appStore: "#",
-    playStore: "#",
-    github: "#",
   },
 ];
