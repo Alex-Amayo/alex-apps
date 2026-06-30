@@ -1,0 +1,115 @@
+---
+interface Props {
+  screenshots: string[];
+  title: string;
+  class?: string;
+}
+
+const { screenshots, title, class: className = "" } = Astro.props;
+---
+
+<screenshot-gallery class:list={["block", className]}>
+  <div
+    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:overflow-visible lg:snap-none"
+  >
+    {
+      screenshots.map((src, i) => (
+        <div class="slide aspect-[1284/2778] shrink-0 basis-[72%] snap-center overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50 sm:basis-[42%] lg:basis-0 lg:grow">
+          <img
+            src={src}
+            alt={`${title} screenshot ${i + 1}`}
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="controls mt-4 flex items-center justify-center gap-3 lg:hidden">
+    <button
+      type="button"
+      class="prev inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
+      aria-label="Previous screenshot"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+
+    <div class="dots flex items-center gap-2">
+      {
+        screenshots.map((_, i) => (
+          <button
+            type="button"
+            class="dot h-2 w-2 rounded-full bg-zinc-300 transition-colors"
+            aria-label={`Go to screenshot ${i + 1}`}
+          />
+        ))
+      }
+    </div>
+
+    <button
+      type="button"
+      class="next inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
+      aria-label="Next screenshot"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </button>
+  </div>
+</screenshot-gallery>
+
+<script>
+  class ScreenshotGallery extends HTMLElement {
+    connectedCallback() {
+      const scroller = this.querySelector<HTMLElement>(".scroller");
+      const slides = Array.from(this.querySelectorAll<HTMLElement>(".slide"));
+      const dots = Array.from(this.querySelectorAll<HTMLButtonElement>(".dot"));
+      const prev = this.querySelector<HTMLButtonElement>(".prev");
+      const next = this.querySelector<HTMLButtonElement>(".next");
+      if (!scroller || slides.length < 2) return;
+
+      let current = 0;
+
+      const setActive = (idx: number) => {
+        current = idx;
+        dots.forEach((d, i) => {
+          d.classList.toggle("bg-sky-500", i === idx);
+          d.classList.toggle("bg-zinc-300", i !== idx);
+        });
+        if (prev) prev.disabled = idx === 0;
+        if (next) next.disabled = idx === slides.length - 1;
+      };
+
+      const scrollToIndex = (idx: number) => {
+        const clamped = Math.max(0, Math.min(slides.length - 1, idx));
+        slides[clamped].scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      };
+
+      dots.forEach((dot, i) => dot.addEventListener("click", () => scrollToIndex(i)));
+      prev?.addEventListener("click", () => scrollToIndex(current - 1));
+      next?.addEventListener("click", () => scrollToIndex(current + 1));
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) setActive(slides.indexOf(e.target as HTMLElement));
+          });
+        },
+        { root: scroller, threshold: 0.6 }
+      );
+      slides.forEach((s) => io.observe(s));
+      setActive(0);
+    }
+  }
+
+  if (!customElements.get("screenshot-gallery")) {
+    customElements.define("screenshot-gallery", ScreenshotGallery);
+  }
+</script>

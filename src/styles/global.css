@@ -37,6 +37,13 @@
   --animate-ai-spin: ai-spin 5s linear infinite;
 }
 
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
