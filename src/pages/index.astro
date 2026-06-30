@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectShowcase from "../components/ProjectShowcase.astro";
+import ShortsCarousel from "../components/ShortsCarousel.astro";
 import { projects } from "../data/projects";
+import { shorts } from "../data/shorts";
 
 
 ---
@@ -78,6 +80,15 @@ import { projects } from "../data/projects";
         ))}
       </ul>
     </div>
+  </section>
+
+  <!-- Watch -->
+  <section id="watch" class="mx-auto max-w-5xl px-6 py-20">
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Watch</h2>
+      <p class="mt-1 text-sm text-zinc-500">Quick clips on mobile dev and building apps.</p>
+    </div>
+    <ShortsCarousel shorts={shorts} />
   </section>
 
   <!-- Featured Projects -->

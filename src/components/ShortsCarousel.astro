@@ -1,0 +1,150 @@
+---
+import type { Short } from "../data/shorts";
+
+interface Props {
+  shorts: Short[];
+  class?: string;
+}
+
+const { shorts, class: className = "" } = Astro.props;
+---
+
+<watch-carousel class:list={["block", className]}>
+  <div
+    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:overflow-visible lg:snap-none"
+  >
+    {
+      shorts.map((short) => (
+        <button
+          type="button"
+          class="facade slide group relative aspect-[9/16] shrink-0 basis-[72%] snap-center overflow-hidden rounded-xl border border-zinc-100 bg-zinc-900 sm:basis-[48%] lg:basis-0 lg:grow"
+          data-id={short.id}
+          data-title={short.title}
+          aria-label={`Play video: ${short.title}`}
+        >
+          <img
+            src={short.poster ?? `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`}
+            alt={short.title}
+            loading="lazy"
+            class="h-full w-full object-cover opacity-90 transition duration-300 group-hover:scale-105 group-hover:opacity-100"
+          />
+          <span class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          <span class="absolute inset-0 flex items-center justify-center">
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-sky-500 shadow-lg transition group-hover:scale-110 group-hover:bg-white">
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-0.5 h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </span>
+          <span class="absolute inset-x-0 bottom-0 p-3 text-left text-sm font-medium text-white">
+            {short.title}
+          </span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="controls mt-4 flex items-center justify-center gap-3 lg:hidden">
+    <button
+      type="button"
+      class="prev inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
+      aria-label="Previous video"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+
+    <div class="dots flex items-center gap-2">
+      {
+        shorts.map((_, i) => (
+          <button
+            type="button"
+            class="dot h-2 w-2 rounded-full bg-zinc-300 transition-colors"
+            aria-label={`Go to video ${i + 1}`}
+          />
+        ))
+      }
+    </div>
+
+    <button
+      type="button"
+      class="next inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
+      aria-label="Next video"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </button>
+  </div>
+</watch-carousel>
+
+<script>
+  class WatchCarousel extends HTMLElement {
+    connectedCallback() {
+      const scroller = this.querySelector<HTMLElement>(".scroller");
+      const slides = Array.from(this.querySelectorAll<HTMLElement>(".slide"));
+      const dots = Array.from(this.querySelectorAll<HTMLButtonElement>(".dot"));
+      const prev = this.querySelector<HTMLButtonElement>(".prev");
+      const next = this.querySelector<HTMLButtonElement>(".next");
+
+      // Click-to-play: swap the facade for the YouTube iframe.
+      slides.forEach((slide) => {
+        slide.addEventListener("click", () => {
+          const id = slide.dataset.id;
+          const title = slide.dataset.title ?? "";
+          if (!id || slide.querySelector("iframe")) return;
+          const iframe = document.createElement("iframe");
+          iframe.className = "h-full w-full";
+          iframe.title = title;
+          iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+          iframe.allowFullscreen = true;
+          iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0`;
+          slide.replaceChildren(iframe);
+        });
+      });
+
+      if (!scroller || slides.length < 2) return;
+
+      let current = 0;
+
+      const setActive = (idx: number) => {
+        current = idx;
+        dots.forEach((d, i) => {
+          d.classList.toggle("bg-sky-500", i === idx);
+          d.classList.toggle("bg-zinc-300", i !== idx);
+        });
+        if (prev) prev.disabled = idx === 0;
+        if (next) next.disabled = idx === slides.length - 1;
+      };
+
+      const scrollToIndex = (idx: number) => {
+        const clamped = Math.max(0, Math.min(slides.length - 1, idx));
+        slides[clamped].scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      };
+
+      dots.forEach((dot, i) => dot.addEventListener("click", () => scrollToIndex(i)));
+      prev?.addEventListener("click", () => scrollToIndex(current - 1));
+      next?.addEventListener("click", () => scrollToIndex(current + 1));
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) setActive(slides.indexOf(e.target as HTMLElement));
+          });
+        },
+        { root: scroller, threshold: 0.6 }
+      );
+      slides.forEach((s) => io.observe(s));
+      setActive(0);
+    }
+  }
+
+  if (!customElements.get("watch-carousel")) {
+    customElements.define("watch-carousel", WatchCarousel);
+  }
+</script>
