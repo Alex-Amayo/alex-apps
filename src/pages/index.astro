@@ -10,113 +10,121 @@ import { shorts } from "../data/shorts";
 
 <BaseLayout title="Home" description="Alex Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
 
-  <!-- Hero -->
-  <section class="border-b border-zinc-200 bg-white py-24">
-    <div class="mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
+  <!-- Tiled layout: each section is a rounded tile floating on the page's
+       gray background, separated by consistent gaps — Apple homepage style. -->
+  <div class="flex flex-col gap-3 sm:gap-4">
 
-      <!-- Avatar — Apple Intelligence glow -->
-      <div class="animate-fade-scale relative mb-8 h-64 w-64">
+    <!-- Hero — black band -->
+    <section class="bg-black py-24">
+      <div class="mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
 
-        <!-- Outer aura: blurred, large, behind everything -->
-        <div class="animate-ai-spin pointer-events-none absolute -inset-1 rounded-full opacity-40 blur-md"
-             style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa)">
+        <!-- Avatar — app icon (squircle) with Apple Intelligence glow -->
+        <div class="animate-fade-scale relative mb-8 h-48 w-48">
+
+          <!-- Outer aura: blurred, large, behind everything -->
+          <div class="pointer-events-none absolute -inset-1 rounded-[22%] opacity-50 blur-md"
+               style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa)">
+          </div>
+
+          <!-- Sharp border ring: static gradient, reveals edge via inset solid div -->
+          <div class="absolute inset-0 rounded-[22%]"
+               style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa);padding:2.5px">
+            <div class="h-full w-full rounded-[22%] bg-black"></div>
+          </div>
+
+          <!-- Image clipped inside the border -->
+          <div class="absolute inset-[2.5px] z-10 overflow-hidden rounded-[22%]">
+            <img
+              src="/headshot.png"
+              alt="Alex Amayo"
+              class="h-full w-full object-cover object-top"
+            />
+          </div>
         </div>
 
-        <!-- Sharp border ring: rotates, reveals edge via inset solid div -->
-        <div class="animate-ai-spin absolute inset-0 rounded-full"
-             style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa);padding:2.5px">
-          <div class="h-full w-full rounded-full bg-white"></div>
+        <!-- Name — fades up after avatar -->
+        <h1 class="animate-fade-up mb-3 text-5xl font-bold tracking-tight text-white
+                   [animation-delay:200ms]">
+          Alex Amayo
+        </h1>
+
+        <!-- Tagline -->
+        <p class="animate-fade-up mb-5 max-w-xl text-xl leading-relaxed text-zinc-300
+                  [animation-delay:350ms]">
+          When You Need A Developer Who Delivers.
+        </p>
+
+        <!-- Skills line -->
+        <p class="animate-fade-up mb-10 text-sm font-medium text-zinc-400
+                  [animation-delay:425ms]">
+          {["TypeScript", "React Native", "Swift", "Kotlin"].join("  ·  ")}
+        </p>
+
+        <!-- CTAs -->
+        <div class="animate-fade-up flex flex-wrap items-center justify-center gap-4
+                    [animation-delay:500ms]">
+          <a
+            href="#featured-work"
+            class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
+          >
+            View My Work
+          </a>
+          <a
+            href="/contact"
+            class="rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20"
+          >
+            Get In Touch
+          </a>
         </div>
 
-        <!-- Image clipped inside the border -->
-        <div class="absolute inset-[2.5px] z-10 overflow-hidden rounded-full">
-          <img
-            src="/headshot.png"
-            alt="Alex Amayo"
-            class="h-full w-full object-cover object-top"
-          />
+      </div>
+    </section>
+
+    <!-- Watch — white band -->
+    <section id="watch" class="scroll-mt-16 bg-white py-20">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Watch</h2>
+          <p class="mt-1 text-sm text-zinc-500">Quick clips on mobile dev and building apps.</p>
+        </div>
+        <ShortsCarousel shorts={shorts} />
+      </div>
+    </section>
+
+    <!-- Featured Projects — white band -->
+    <section id="featured-work" class="scroll-mt-16 bg-white py-20">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Featured Work</h2>
+          <p class="mt-1 text-sm text-zinc-500">A selection of recent mobile projects.</p>
+        </div>
+
+        <div class="flex flex-col">
+          {projects.map((project) => (
+            <ProjectShowcase {...project} />
+          ))}
         </div>
       </div>
+    </section>
 
-      <!-- Name — fades up after avatar -->
-      <h1 class="animate-fade-up mb-3 text-5xl font-bold tracking-tight text-zinc-900
-                 [animation-delay:200ms]">
-        Alex Amayo
-      </h1>
-
-      <!-- Tagline -->
-      <p class="animate-fade-up mb-5 max-w-xl text-xl leading-relaxed text-zinc-500
-                [animation-delay:350ms]">
-        When You Need A Developer Who Delivers.
-      </p>
-
-      <!-- Skills line -->
-      <p class="animate-fade-up mb-10 text-sm font-medium text-zinc-400
-                [animation-delay:425ms]">
-        {["TypeScript", "React Native", "Swift", "Kotlin"].join("  ·  ")}
-      </p>
-
-      <!-- CTAs -->
-      <div class="animate-fade-up flex flex-wrap items-center justify-center gap-4
-                  [animation-delay:500ms]">
-        <a
-          href="#featured-work"
-          class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
-        >
-          View My Work
-        </a>
+    <!-- CTA banner — white band -->
+    <section class="bg-white py-24">
+      <div class="mx-auto max-w-2xl px-6 text-center">
+        <h2 class="mb-3 text-3xl font-bold tracking-tight text-zinc-900">
+          Get in touch.
+        </h2>
+        <p class="mb-8 text-zinc-500">
+          Open to impactful engineering roles.
+        </p>
         <a
           href="/contact"
-          class="rounded-full border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:border-zinc-400 hover:bg-zinc-50"
+          class="rounded-full bg-sky-500 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
         >
           Get In Touch
         </a>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- Watch -->
-  <section id="watch" class="mx-auto max-w-5xl px-6 py-20">
-    <div class="mb-10">
-      <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Watch</h2>
-      <p class="mt-1 text-sm text-zinc-500">Quick clips on mobile dev and building apps.</p>
-    </div>
-    <ShortsCarousel shorts={shorts} />
-  </section>
-
-  <!-- Featured Projects -->
-  <section id="featured-work" class="border-y border-zinc-200 bg-zinc-50 py-20">
-    <div class="mx-auto max-w-5xl px-6">
-      <div class="mb-10">
-        <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Featured Work</h2>
-        <p class="mt-1 text-sm text-zinc-500">A selection of recent mobile projects.</p>
-      </div>
-
-      <div class="flex flex-col">
-        {projects.map((project) => (
-          <ProjectShowcase {...project} />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA banner -->
-  <section class="bg-white py-24">
-    <div class="mx-auto max-w-2xl px-6 text-center">
-      <h2 class="mb-3 text-3xl font-bold tracking-tight text-zinc-900">
-        Get in touch.
-      </h2>
-      <p class="mb-8 text-zinc-500">
-        Open to impactful engineering roles.
-      </p>
-      <a
-        href="/contact"
-        class="rounded-full bg-sky-500 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
-      >
-        Get In Touch
-      </a>
-    </div>
-  </section>
+  </div>
 
 </BaseLayout>

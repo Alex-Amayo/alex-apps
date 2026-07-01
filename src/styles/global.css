@@ -59,6 +59,7 @@ html {
 }
 
 body {
-  background-color: #ffffff;
+  /* Gap color: tiles float on this light gray, Apple-style */
+  background-color: var(--color-zinc-50);
   color: var(--color-zinc-900);
 }
