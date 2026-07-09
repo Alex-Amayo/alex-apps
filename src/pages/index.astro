@@ -10,13 +10,14 @@ import { shorts } from "../data/shorts";
 
 <BaseLayout title="Home" description="Alex Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
 
-  <!-- Tiled layout: each section is a rounded tile floating on the page's
-       gray background, separated by consistent gaps — Apple homepage style. -->
-  <div class="flex flex-col gap-3 sm:gap-4">
+  <!-- Tiled layout: each section is a full-bleed #F5F5F6 band separated by
+       white gutters (gap-gutter); content is capped to max-w-6xl inside so it
+       never hugs the viewport edge — Apple homepage style. -->
+  <div class="flex flex-col gap-gutter">
 
-    <!-- Hero — black band -->
-    <section class="bg-black py-24">
-      <div class="mx-auto flex max-w-6xl flex-col items-center px-6 text-center">
+    <!-- Hero — light tile -->
+    <section class="bg-[#F5F5F6] py-24">
+      <div class="mx-auto flex max-w-6xl flex-col items-center px-gutter text-center">
 
         <!-- Avatar — app icon (squircle) with Apple Intelligence glow -->
         <div class="animate-fade-scale relative mb-8 h-48 w-48">
@@ -29,7 +30,7 @@ import { shorts } from "../data/shorts";
           <!-- Sharp border ring: static gradient, reveals edge via inset solid div -->
           <div class="absolute inset-0 rounded-[22%]"
                style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa);padding:2.5px">
-            <div class="h-full w-full rounded-[22%] bg-black"></div>
+            <div class="h-full w-full rounded-[22%] bg-[#F5F5F6]"></div>
           </div>
 
           <!-- Image clipped inside the border -->
@@ -43,13 +44,13 @@ import { shorts } from "../data/shorts";
         </div>
 
         <!-- Name — fades up after avatar -->
-        <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-white sm:text-7xl
+        <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-zinc-900 sm:text-7xl
                    [animation-delay:200ms]">
           Alex Amayo
         </h1>
 
         <!-- Tagline -->
-        <p class="animate-fade-up mb-5 max-w-2xl text-xl leading-relaxed text-zinc-300 sm:text-2xl
+        <p class="animate-fade-up mb-5 max-w-2xl text-xl leading-relaxed text-zinc-500 sm:text-2xl
                   [animation-delay:350ms]">
           When You Need A Developer Who Delivers.
         </p>
@@ -71,7 +72,7 @@ import { shorts } from "../data/shorts";
           </a>
           <a
             href="/contact"
-            class="rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20"
+            class="rounded-full border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50"
           >
             Get In Touch
           </a>
@@ -81,8 +82,8 @@ import { shorts } from "../data/shorts";
     </section>
 
     <!-- Watch — white band -->
-    <section id="watch" class="scroll-mt-16 bg-white py-20">
-      <div class="mx-auto max-w-6xl px-6">
+    <section id="watch" class="scroll-mt-16 bg-[#F5F5F6] py-20">
+      <div class="mx-auto max-w-6xl px-gutter">
         <div class="mb-10">
           <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">Watch.</h2>
           <p class="mt-3 text-lg text-zinc-500 sm:text-xl">Quick clips on mobile dev and building apps.</p>
@@ -91,25 +92,18 @@ import { shorts } from "../data/shorts";
       </div>
     </section>
 
-    <!-- Featured Projects — Apple light-gray band, white cards float on top -->
-    <section id="featured-work" class="scroll-mt-16 bg-[#f5f5f7] py-20">
-      <div class="mx-auto max-w-6xl px-6">
-        <div class="mb-10">
-          <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">Featured work.</h2>
-          <p class="mt-3 text-lg text-zinc-500 sm:text-xl">A selection of recent mobile projects.</p>
-        </div>
-
-        <div class="flex flex-col gap-6">
-          {projects.map((project) => (
-            <ProjectShowcase {...project} />
-          ))}
-        </div>
+    <!-- Projects — Apple tile grid: no header, no rounding, white gutters all round -->
+    <section id="featured-work" class="scroll-mt-16">
+      <div class="grid grid-cols-1 gap-gutter px-gutter sm:grid-cols-2">
+        {projects.map((project) => (
+          <ProjectShowcase {...project} />
+        ))}
       </div>
     </section>
 
-    <!-- CTA banner — white band -->
-    <section class="bg-white py-24">
-      <div class="mx-auto max-w-2xl px-6 text-center">
+    <!-- CTA banner — light tile -->
+    <section class="bg-[#F5F5F6] py-24">
+      <div class="mx-auto max-w-2xl px-gutter text-center">
         <h2 class="mb-3 text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
           Get in touch.
         </h2>
