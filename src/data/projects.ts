@@ -18,7 +18,7 @@ export const projects: Project[] = [
     description:
       "Cross-platform e-commerce app with real-time cart sync, Stripe payments, and push notifications — runs natively on iOS and Android from a single codebase.",
     image: "/screenshots/quickcart/1.png",
-    bg: "#F5F5F6",
+    bg: "#FFFFFF",
     tags: ["React Native", "TypeScript", "Expo", "Zustand", "Stripe"],
     appStore: "#",
     playStore: "#",
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     description:
       "Personalized fitness coaching app with adaptive workouts, progress analytics, and a web dashboard for coaches to manage their clients.",
     image: "/screenshots/pocketcoach/1.png",
-    bg: "#F5F5F6",
+    bg: "#FFFFFF",
     tags: ["React Native", "TypeScript", "TanStack Query", "Firebase"],
     appStore: "#",
     playStore: "#",

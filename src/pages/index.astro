@@ -19,28 +19,16 @@ import { shorts } from "../data/shorts";
     <section class="bg-[#F5F5F6] py-24">
       <div class="mx-auto flex max-w-6xl flex-col items-center px-gutter text-center">
 
-        <!-- Avatar — app icon (squircle) with Apple Intelligence glow -->
-        <div class="animate-fade-scale relative mb-8 h-48 w-48">
-
-          <!-- Outer aura: blurred, large, behind everything -->
-          <div class="pointer-events-none absolute -inset-1 rounded-[22%] opacity-50 blur-md"
-               style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa)">
-          </div>
-
-          <!-- Sharp border ring: static gradient, reveals edge via inset solid div -->
-          <div class="absolute inset-0 rounded-[22%]"
-               style="background:conic-gradient(from 0deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c,#60a5fa);padding:2.5px">
-            <div class="h-full w-full rounded-[22%] bg-[#F5F5F6]"></div>
-          </div>
-
-          <!-- Image clipped inside the border -->
-          <div class="absolute inset-[2.5px] z-10 overflow-hidden rounded-[22%]">
-            <img
-              src="/headshot.png"
-              alt="Alex Amayo"
-              class="h-full w-full object-cover object-top"
-            />
-          </div>
+        <!-- Avatar — app icon (squircle) with a single static gradient ring -->
+        <div
+          class="animate-fade-scale mb-8 h-48 w-48 rounded-[22%] p-[2.5px]"
+          style="background:linear-gradient(135deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c)"
+        >
+          <img
+            src="/headshot.png"
+            alt="Alex Amayo"
+            class="h-full w-full rounded-[21%] object-cover object-top"
+          />
         </div>
 
         <!-- Name — fades up after avatar -->
@@ -55,24 +43,19 @@ import { shorts } from "../data/shorts";
           When You Need A Developer Who Delivers.
         </p>
 
-        <!-- Skills line -->
-        <p class="animate-fade-up mb-10 text-sm font-medium text-zinc-400
+        <!-- Short bio — three lines max -->
+        <p class="animate-fade-up mb-10 max-w-xl text-base leading-relaxed text-zinc-500
                   [animation-delay:425ms]">
-          {["TypeScript", "React Native", "Swift", "Kotlin"].join("  ·  ")}
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam.
         </p>
 
         <!-- CTAs -->
         <div class="animate-fade-up flex flex-wrap items-center justify-center gap-4
                     [animation-delay:500ms]">
           <a
-            href="#featured-work"
-            class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
-          >
-            View My Work
-          </a>
-          <a
             href="/contact"
-            class="rounded-full border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50"
+            class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
           >
             Get In Touch
           </a>
@@ -81,23 +64,27 @@ import { shorts } from "../data/shorts";
       </div>
     </section>
 
-    <!-- Watch — white band -->
-    <section id="watch" class="scroll-mt-16 bg-[#F5F5F6] py-20">
-      <div class="mx-auto max-w-6xl px-gutter">
-        <div class="mb-10">
-          <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">Watch.</h2>
-          <p class="mt-3 text-lg text-zinc-500 sm:text-xl">Quick clips on mobile dev and building apps.</p>
-        </div>
-        <ShortsCarousel shorts={shorts} />
+    <!-- Projects — Mac-page pattern: centered header + rounded tiles on one continuous band -->
+    <section class="bg-[#F5F5F6] py-14">
+      <div class="mx-auto mb-10 max-w-6xl px-gutter">
+        <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+          Projects
+        </h2>
       </div>
-    </section>
-
-    <!-- Projects — Apple tile grid: no header, no rounding, white gutters all round -->
-    <section id="featured-work" class="scroll-mt-16">
-      <div class="grid grid-cols-1 gap-gutter px-gutter sm:grid-cols-2">
+      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter sm:grid-cols-2">
         {projects.map((project) => (
           <ProjectShowcase {...project} />
         ))}
+      </div>
+    </section>
+
+    <!-- Watch — white band -->
+    <section class="bg-[#F5F5F6] py-20">
+      <div class="mx-auto max-w-6xl px-gutter">
+        <div class="mb-10">
+          <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">Videos</h2>
+        </div>
+        <ShortsCarousel shorts={shorts} />
       </div>
     </section>
 
