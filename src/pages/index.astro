@@ -8,7 +8,7 @@ import { shorts } from "../data/shorts";
 
 ---
 
-<BaseLayout title="Home" description="Alex Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
+<BaseLayout title="Home" description="Alex J Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
 
   <!-- Tiled layout: each section is a full-bleed #F5F5F6 band separated by
        white gutters (gap-gutter); content is capped to max-w-6xl inside so it
@@ -78,8 +78,9 @@ import { shorts } from "../data/shorts";
       </div>
     </section>
 
-    <!-- Watch — white band -->
-    <section class="bg-[#F5F5F6] py-20">
+    <!-- Videos — gated behind the `videos-section` PostHog feature flag.
+         Hidden by default; revealed only when the flag is enabled. -->
+    <section id="videos-section" class="hidden bg-[#F5F5F6] py-20">
       <div class="mx-auto max-w-6xl px-gutter">
         <div class="mb-10">
           <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">Videos</h2>
@@ -87,6 +88,14 @@ import { shorts } from "../data/shorts";
         <ShortsCarousel shorts={shorts} />
       </div>
     </section>
+
+    <script is:inline>
+      window.posthog?.onFeatureFlags(function () {
+        if (window.posthog.isFeatureEnabled("videos-section")) {
+          document.getElementById("videos-section")?.classList.remove("hidden");
+        }
+      });
+    </script>
 
     <!-- CTA banner — light tile -->
     <section class="bg-[#F5F5F6] py-24">

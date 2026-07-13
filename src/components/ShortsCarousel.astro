@@ -101,6 +101,10 @@ const { shorts, class: className = "" } = Astro.props;
           iframe.allowFullscreen = true;
           iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0`;
           slide.replaceChildren(iframe);
+          (window as any).posthog?.capture("video_played", {
+            video_title: title,
+            video_id: id,
+          });
         });
       });
 

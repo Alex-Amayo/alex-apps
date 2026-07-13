@@ -27,21 +27,23 @@ const hasLinks = appStore || playStore || web || github;
 ---
 
 <article
-  class="flex flex-col items-center rounded-[28px] px-6 py-12 text-center sm:py-14"
+  class="flex h-full flex-col items-center rounded-[28px] px-6 py-12 text-center sm:py-14"
   style={`background-color:${bg}`}
 >
   <h3 class="text-2xl font-semibold tracking-tight text-zinc-900">{title}</h3>
-  <p class="mx-auto mt-3 max-w-md text-base leading-relaxed text-zinc-500 sm:text-lg">
+  <p class="mx-auto mt-3 line-clamp-3 max-w-md text-base leading-relaxed text-zinc-500 sm:text-lg">
     {description}
   </p>
 
-  <div class="mt-4 flex flex-wrap justify-center gap-2">
-    {tags.map((tag) => (
-      <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
-        {tag}
-      </span>
-    ))}
-  </div>
+  {tags.length > 0 && (
+    <div class="mt-4 flex flex-wrap justify-center gap-2">
+      {tags.map((tag) => (
+        <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
+          {tag}
+        </span>
+      ))}
+    </div>
+  )}
 
   {hasLinks && (
     <div class="mt-4 flex flex-wrap justify-center gap-2">
@@ -51,6 +53,8 @@ const hasLinks = appStore || playStore || web || github;
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+          data-ph-project={title}
+          data-ph-link="app_store"
         >
           <img src="https://svgl.app/library/appstore.svg" alt="" class="h-4 w-4" loading="lazy" />
           App Store
@@ -62,6 +66,8 @@ const hasLinks = appStore || playStore || web || github;
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+          data-ph-project={title}
+          data-ph-link="play_store"
         >
           <img src="https://svgl.app/library/googleplay.svg" alt="" class="h-4 w-4" loading="lazy" />
           Google Play
@@ -73,6 +79,8 @@ const hasLinks = appStore || playStore || web || github;
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+          data-ph-project={title}
+          data-ph-link="web"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
@@ -87,6 +95,8 @@ const hasLinks = appStore || playStore || web || github;
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+          data-ph-project={title}
+          data-ph-link="github"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
@@ -102,7 +112,21 @@ const hasLinks = appStore || playStore || web || github;
       src={image}
       alt={title}
       loading="lazy"
-      class="mx-auto mt-8 max-h-[440px] w-auto object-contain"
+      class="mx-auto mt-auto pt-8 max-h-[440px] w-auto object-contain"
     />
   )}
 </article>
+
+<script is:inline>
+  if (!window._phProjectLinksInit) {
+    window._phProjectLinksInit = true;
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-ph-link]');
+      if (!el) return;
+      window.posthog?.capture('project_link_clicked', {
+        project_name: el.getAttribute('data-ph-project'),
+        link_type: el.getAttribute('data-ph-link'),
+      });
+    });
+  }
+</script>

@@ -14,24 +14,23 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "QuickCart",
+    title: "KeyLens",
     description:
-      "Cross-platform e-commerce app with real-time cart sync, Stripe payments, and push notifications — runs natively on iOS and Android from a single codebase.",
-    image: "/screenshots/quickcart/1.png",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    image: "/KeyLens.png",
     bg: "#FFFFFF",
-    tags: ["React Native", "TypeScript", "Expo", "Zustand", "Stripe"],
-    appStore: "#",
+    tags: [],
+    appStore: "https://apps.apple.com/us/app/keylens/id6761850903",
     playStore: "#",
+    web: "https://keylensapp.com",
   },
   {
-    title: "PocketCoach",
+    title: "Citrine Members",
     description:
-      "Personalized fitness coaching app with adaptive workouts, progress analytics, and a web dashboard for coaches to manage their clients.",
-    image: "/screenshots/pocketcoach/1.png",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    image: "/Citrine.png",
     bg: "#FFFFFF",
-    tags: ["React Native", "TypeScript", "TanStack Query", "Firebase"],
-    appStore: "#",
-    playStore: "#",
-    web: "#",
+    tags: [],
+    appStore: "https://apps.apple.com/us/app/citrine-members/id6550923036",
   },
 ];
