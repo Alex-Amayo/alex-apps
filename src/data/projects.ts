@@ -7,6 +7,8 @@ export interface Project {
   image?: string;
   /** Tile background color */
   bg?: string;
+  /** Text color (title + description). Defaults to the zinc palette. */
+  textColor?: string;
   tags: string[];
   appStore?: string;
   playStore?: string;
@@ -21,7 +23,8 @@ export const projects: Project[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
     logo: "/KeyLens_logo.png",
     image: "/KeyLens.png",
-    bg: "#FFFFFF",
+    bg: "#69C9C3",
+    textColor: "#FFFFFF",
     tags: [],
     appStore: "https://apps.apple.com/us/app/keylens/id6761850903",
     playStore: "#",
@@ -33,7 +36,8 @@ export const projects: Project[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
     logo: "/Citrine_logo.jpeg",
     image: "/Citrine.png",
-    bg: "#FFFFFF",
+    bg: "#BD7901",
+    textColor: "#FFFFFF",
     tags: [],
     appStore: "https://apps.apple.com/us/app/citrine-members/id6550923036",
   },
