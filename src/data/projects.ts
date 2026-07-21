@@ -23,7 +23,7 @@ export const projects: Project[] = [
     title: "KeyLens",
     owned: true,
     description:
-      "A chord progression app for musicians, built with React Native and shipped to iOS, Android, and web. Includes a native Swift module for sending MIDI data over USB and Bluetooth on iOS.",
+      "Build, play and learn chord progressions. Includes an in-app purchase that lets users play external DAWs, synthesizers, and MIDI hardware over Bluetooth LE or USB.",
     logo: "/KeyLens_logo.png",
     image: "/KeyLens.png",
     bg: "#69C9C3",
@@ -37,7 +37,7 @@ export const projects: Project[] = [
     title: "Citrine Members",
     owned: false,
     description:
-      "A credit card app for Citrine members built with React Native — onboarding, spend tracking, statements, and rewards, and push notifications.",
+      "A credit card app for Citrine members with onboarding, spend tracking, statements, rewards, and push notifications.",
     logo: "/Citrine_logo.jpeg",
     image: "/Citrine.png",
     bg: "#BD7901",

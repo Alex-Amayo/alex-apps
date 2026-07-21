@@ -9,15 +9,15 @@ const myApps = projects.filter((p) => p.owned);
 const workedOn = projects.filter((p) => !p.owned);
 ---
 
-<BaseLayout title="Home" description="Alex J Amayo — I build apps for iOS, Android and the web with React Native.">
+<BaseLayout title="Home" description="Alex J Amayo — I build mobile apps with React Native.">
 
   <!-- Tiled layout: each section is a full-bleed #F5F5F6 band separated by
        white gutters (gap-gutter); content is capped to max-w-6xl inside so it
        never hugs the viewport edge — Apple homepage style. -->
   <div class="flex flex-col gap-gutter">
 
-    <!-- Hero — light tile -->
-    <section class="bg-[#F5F5F6] py-24">
+    <!-- Hero — dark tile -->
+    <section class="bg-black py-24">
       <div class="mx-auto flex max-w-6xl flex-col items-center px-gutter text-center">
 
         <!-- Avatar — app icon (squircle) with a single static gradient ring -->
@@ -33,15 +33,15 @@ const workedOn = projects.filter((p) => !p.owned);
         </div>
 
         <!-- Name — fades up after avatar -->
-        <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-zinc-900 sm:text-7xl
+        <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-white sm:text-7xl
                    [animation-delay:200ms]">
           Hi, I'm Alex
         </h1>
 
         <!-- Tagline -->
-        <p class="animate-fade-up mb-10 max-w-2xl text-xl leading-relaxed text-zinc-500 sm:text-2xl
+        <p class="animate-fade-up mb-10 max-w-2xl text-xl leading-relaxed text-zinc-200 sm:text-2xl
                   [animation-delay:350ms]">
-          I build apps for iOS, Android and the web with React Native.
+          I build mobile apps with React Native.
         </p>
 
         <!-- CTAs -->
