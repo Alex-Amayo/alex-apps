@@ -1,6 +1,8 @@
 export interface Project {
   title: string;
   description: string;
+  /** App logo/icon, shown above the title */
+  logo?: string;
   /** Single screenshot, centered inside the tile */
   image?: string;
   /** Tile background color */
@@ -17,6 +19,7 @@ export const projects: Project[] = [
     title: "KeyLens",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    logo: "/KeyLens_logo.png",
     image: "/KeyLens.png",
     bg: "#FFFFFF",
     tags: [],
@@ -28,6 +31,7 @@ export const projects: Project[] = [
     title: "Citrine Members",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    logo: "/Citrine_logo.jpeg",
     image: "/Citrine.png",
     bg: "#FFFFFF",
     tags: [],
