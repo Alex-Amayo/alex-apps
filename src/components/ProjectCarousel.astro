@@ -1,0 +1,168 @@
+---
+import ProjectShowcase from "./ProjectShowcase.astro";
+import type { Project } from "../data/projects";
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const isCarousel = projects.length > 1;
+---
+
+{isCarousel ? (
+  <div class="mx-auto max-w-6xl px-gutter" data-carousel>
+    <!-- Track: full-width scroll-snap slides -->
+    <div
+      class="flex snap-x snap-mandatory gap-gutter overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      data-carousel-track
+    >
+      {projects.map((project) => (
+        <div class="w-full flex-none snap-center">
+          <ProjectShowcase {...project} />
+        </div>
+      ))}
+    </div>
+
+    <!-- Controls: prev — dots — next -->
+    <div class="mt-6 flex items-center justify-center gap-4">
+      <button
+        type="button"
+        data-carousel-prev
+        aria-label="Previous project"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-zinc-800 shadow-sm transition hover:bg-zinc-100 disabled:pointer-events-none disabled:opacity-30"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-2" data-carousel-dots>
+        {projects.map((_, i) => (
+          <button
+            type="button"
+            data-carousel-dot={i}
+            aria-label={`Go to project ${i + 1}`}
+            class="h-2 w-2 rounded-full bg-zinc-300 transition-all data-[active]:w-5 data-[active]:bg-zinc-600"
+          />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        data-carousel-next
+        aria-label="Next project"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-white text-zinc-800 shadow-sm transition hover:bg-zinc-100 disabled:pointer-events-none disabled:opacity-30"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+) : (
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter">
+    {projects.map((project) => (
+      <ProjectShowcase {...project} />
+    ))}
+  </div>
+)}
+
+<script is:inline>
+  (function () {
+    function initCarousel(root) {
+      if (root.dataset.carouselReady) return;
+      root.dataset.carouselReady = "1";
+
+      const track = root.querySelector("[data-carousel-track]");
+      const prev = root.querySelector("[data-carousel-prev]");
+      const next = root.querySelector("[data-carousel-next]");
+      const dots = Array.from(root.querySelectorAll("[data-carousel-dot]"));
+      if (!track) return;
+
+      function slideWidth() {
+        const first = track.firstElementChild;
+        if (!first) return track.clientWidth;
+        const gap = parseFloat(getComputedStyle(track).columnGap || "0") || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+
+      function currentIndex() {
+        return Math.round(track.scrollLeft / slideWidth());
+      }
+
+      function update() {
+        const i = currentIndex();
+        const maxScroll = track.scrollWidth - track.clientWidth - 1;
+        if (prev) prev.disabled = track.scrollLeft <= 1;
+        if (next) next.disabled = track.scrollLeft >= maxScroll;
+        dots.forEach((d, di) =>
+          di === i ? d.setAttribute("data-active", "") : d.removeAttribute("data-active")
+        );
+      }
+
+      // Autoplay: advance every 5s, loop back to the start at the end.
+      const AUTOPLAY_MS = 2500;
+      let timer = null;
+
+      function advance() {
+        const maxScroll = track.scrollWidth - track.clientWidth - 1;
+        if (track.scrollLeft >= maxScroll) {
+          track.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          track.scrollBy({ left: slideWidth(), behavior: "smooth" });
+        }
+      }
+      function start() {
+        stop();
+        timer = window.setInterval(advance, AUTOPLAY_MS);
+      }
+      function stop() {
+        if (timer) window.clearInterval(timer);
+        timer = null;
+      }
+      // Restart the clock after a manual nav so it doesn't jump right away.
+      function nudge(fn) {
+        return function () {
+          fn();
+          start();
+        };
+      }
+
+      prev?.addEventListener("click", nudge(() =>
+        track.scrollBy({ left: -slideWidth(), behavior: "smooth" })
+      ));
+      next?.addEventListener("click", nudge(() =>
+        track.scrollBy({ left: slideWidth(), behavior: "smooth" })
+      ));
+      dots.forEach((d, di) =>
+        d.addEventListener("click", nudge(() =>
+          track.scrollTo({ left: di * slideWidth(), behavior: "smooth" })
+        ))
+      );
+
+      track.addEventListener("scroll", () => window.requestAnimationFrame(update), { passive: true });
+      window.addEventListener("resize", update);
+      update();
+
+      // Pause only during an active drag/swipe or when the tab is hidden —
+      // not on plain hover (the tiles fill the viewport).
+      track.addEventListener("pointerdown", stop);
+      window.addEventListener("pointerup", start);
+      document.addEventListener("visibilitychange", () =>
+        document.hidden ? stop() : start()
+      );
+
+      start();
+    }
+
+    function initAll() {
+      document.querySelectorAll("[data-carousel]").forEach(initCarousel);
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initAll);
+    } else {
+      initAll();
+    }
+  })();
+</script>

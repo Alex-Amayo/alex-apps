@@ -1,6 +1,8 @@
 export interface Project {
   title: string;
   description: string;
+  /** true = "My Apps"; false = "Apps I've worked on" */
+  owned?: boolean;
   /** App logo/icon, shown above the title */
   logo?: string;
   /** Single screenshot, centered inside the tile */
@@ -19,8 +21,9 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "KeyLens",
+    owned: true,
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "A chord progression app for musicians, built with React Native and shipped to iOS, Android, and web. Includes a native Swift module for sending MIDI data over USB and Bluetooth on iOS.",
     logo: "/KeyLens_logo.png",
     image: "/KeyLens.png",
     bg: "#69C9C3",
@@ -32,8 +35,9 @@ export const projects: Project[] = [
   },
   {
     title: "Citrine Members",
+    owned: false,
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "A credit card app for Citrine members built with React Native — onboarding, spend tracking, statements, and rewards, and push notifications.",
     logo: "/Citrine_logo.jpeg",
     image: "/Citrine.png",
     bg: "#BD7901",

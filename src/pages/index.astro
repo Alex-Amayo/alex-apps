@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectShowcase from "../components/ProjectShowcase.astro";
+import ProjectCarousel from "../components/ProjectCarousel.astro";
 import ShortsCarousel from "../components/ShortsCarousel.astro";
 import { projects } from "../data/projects";
 import { shorts } from "../data/shorts";
 
-
+const myApps = projects.filter((p) => p.owned);
+const workedOn = projects.filter((p) => !p.owned);
 ---
 
-<BaseLayout title="Home" description="Alex J Amayo — Mobile Developer. When You Need A Developer Who Delivers.">
+<BaseLayout title="Home" description="Alex J Amayo — I build apps for iOS, Android and the web with React Native.">
 
   <!-- Tiled layout: each section is a full-bleed #F5F5F6 band separated by
        white gutters (gap-gutter); content is capped to max-w-6xl inside so it
@@ -34,20 +35,13 @@ import { shorts } from "../data/shorts";
         <!-- Name — fades up after avatar -->
         <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-zinc-900 sm:text-7xl
                    [animation-delay:200ms]">
-          Alex Amayo
+          Hi, I'm Alex
         </h1>
 
         <!-- Tagline -->
-        <p class="animate-fade-up mb-5 max-w-2xl text-xl leading-relaxed text-zinc-500 sm:text-2xl
+        <p class="animate-fade-up mb-10 max-w-2xl text-xl leading-relaxed text-zinc-500 sm:text-2xl
                   [animation-delay:350ms]">
-          When You Need A Developer Who Delivers.
-        </p>
-
-        <!-- Short bio — three lines max -->
-        <p class="animate-fade-up mb-10 max-w-xl text-base leading-relaxed text-zinc-500
-                  [animation-delay:425ms]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam.
+          I build apps for iOS, Android and the web with React Native.
         </p>
 
         <!-- CTAs -->
@@ -66,16 +60,27 @@ import { shorts } from "../data/shorts";
 
     <!-- Projects — Mac-page pattern: centered header + rounded tiles on one continuous band -->
     <section class="bg-[#F5F5F6] py-14">
-      <div class="mx-auto mb-10 max-w-6xl px-gutter">
-        <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-          Projects
-        </h2>
-      </div>
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter">
-        {projects.map((project) => (
-          <ProjectShowcase {...project} />
-        ))}
-      </div>
+      {myApps.length > 0 && (
+        <>
+          <div class="mx-auto mb-10 max-w-6xl px-gutter">
+            <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+              My Apps
+            </h2>
+          </div>
+          <ProjectCarousel projects={myApps} />
+        </>
+      )}
+
+      {workedOn.length > 0 && (
+        <>
+          <div class="mx-auto mb-10 mt-16 max-w-6xl px-gutter">
+            <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+              Apps I've worked on
+            </h2>
+          </div>
+          <ProjectCarousel projects={workedOn} />
+        </>
+      )}
     </section>
 
     <!-- Videos — gated behind the `videos-section` PostHog feature flag.
