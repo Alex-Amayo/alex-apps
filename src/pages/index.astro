@@ -22,7 +22,7 @@ const workedOn = projects.filter((p) => !p.owned);
 
         <!-- Avatar — app icon (squircle) with a single static gradient ring -->
         <div
-          class="animate-fade-scale mb-8 h-48 w-48 rounded-[22%] p-[2.5px]"
+          class="animate-fade-scale mb-8 h-40 w-40 rounded-[22%] p-[2.5px] sm:h-48 sm:w-48"
           style="background:linear-gradient(135deg,#60a5fa,#a78bfa,#e879f9,#fb7185,#fb923c)"
         >
           <img
@@ -33,20 +33,28 @@ const workedOn = projects.filter((p) => !p.owned);
         </div>
 
         <!-- Name — fades up after avatar -->
-        <h1 class="animate-fade-up mb-3 text-6xl font-semibold tracking-tight text-white sm:text-7xl
+        <h1 class="animate-fade-up mb-3 text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl
                    [animation-delay:200ms]">
           Hi, I'm Alex
         </h1>
 
-        <!-- Tagline -->
-        <p class="animate-fade-up mb-10 max-w-2xl text-xl leading-relaxed text-zinc-200 sm:text-2xl
+        <!-- Subtitle -->
+        <p class="animate-fade-up mb-6 text-xl font-medium tracking-tight text-zinc-200 sm:text-2xl lg:text-3xl
                   [animation-delay:350ms]">
-          I build mobile apps with React Native.
+          I build apps for real users.
+        </p>
+
+        <!-- Tagline -->
+        <p class="animate-fade-up mb-10 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg lg:text-xl
+                  [animation-delay:500ms]">
+          As AI takes over more of the coding, my job is to deeply understand
+          every part of your product, identify what customers care about, and
+          architect solutions that scale.
         </p>
 
         <!-- CTAs -->
         <div class="animate-fade-up flex flex-wrap items-center justify-center gap-4
-                    [animation-delay:500ms]">
+                    [animation-delay:650ms]">
           <a
             href="/contact"
             class="rounded-full bg-sky-500 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-600"
@@ -58,30 +66,29 @@ const workedOn = projects.filter((p) => !p.owned);
       </div>
     </section>
 
-    <!-- Projects — Mac-page pattern: centered header + rounded tiles on one continuous band -->
-    <section class="bg-[#F5F5F6] py-14">
-      {myApps.length > 0 && (
-        <>
-          <div class="mx-auto mb-10 max-w-6xl px-gutter">
-            <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-              My Apps
-            </h2>
-          </div>
-          <ProjectCarousel projects={myApps} />
-        </>
-      )}
+    <!-- My apps — its own band -->
+    {myApps.length > 0 && (
+      <section class="bg-[#F5F5F6] py-14">
+        <div class="mx-auto mb-10 max-w-6xl px-gutter">
+          <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+            See what I've built independently.
+          </h2>
+        </div>
+        <ProjectCarousel projects={myApps} />
+      </section>
+    )}
 
-      {workedOn.length > 0 && (
-        <>
-          <div class="mx-auto mb-10 mt-16 max-w-6xl px-gutter">
-            <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
-              Apps I've worked on
-            </h2>
-          </div>
-          <ProjectCarousel projects={workedOn} />
-        </>
-      )}
-    </section>
+    <!-- Previous work — its own band -->
+    {workedOn.length > 0 && (
+      <section class="bg-[#F5F5F6] py-14">
+        <div class="mx-auto mb-10 max-w-6xl px-gutter">
+          <h2 class="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
+            See what I've built for others.
+          </h2>
+        </div>
+        <ProjectCarousel projects={workedOn} />
+      </section>
+    )}
 
     <!-- Videos — gated behind the `videos-section` PostHog feature flag.
          Hidden by default; revealed only when the flag is enabled. -->
