@@ -62,5 +62,7 @@ export const projects: Project[] = [
     bg: "#FFFFFF",
     showTitle: false,
     tags: [],
+    appStore: "https://apps.apple.com/us/app/total-card/id1574751566",
+    playStore: "https://play.google.com/store/apps/details?id=com.vervent.total&hl=en_US",
   },
 ];
