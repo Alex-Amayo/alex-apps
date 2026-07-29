@@ -40,7 +40,7 @@ export const projects: Project[] = [
     web: "https://keylensapp.com",
   },
   {
-    title: "Citrine Members",
+    title: "Citrine",
     owned: false,
     description:
       "A credit card app for Citrine members with onboarding, spend tracking, statements, rewards, and push notifications.",
