@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectCarousel from "../components/ProjectCarousel.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
 import ShortsCarousel from "../components/ShortsCarousel.astro";
 import { projects } from "../data/projects";
 import { shorts } from "../data/shorts";
@@ -74,7 +74,7 @@ const workedOn = projects.filter((p) => !p.owned);
             See what I've built independently.
           </h2>
         </div>
-        <ProjectCarousel projects={myApps} />
+        <ProjectGrid projects={myApps} />
       </section>
     )}
 
@@ -86,7 +86,7 @@ const workedOn = projects.filter((p) => !p.owned);
             See what I've built for others.
           </h2>
         </div>
-        <ProjectCarousel projects={workedOn} />
+        <ProjectGrid projects={workedOn} />
       </section>
     )}
 

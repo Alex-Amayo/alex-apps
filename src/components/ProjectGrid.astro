@@ -1,0 +1,25 @@
+---
+import ProjectShowcase from "./ProjectShowcase.astro";
+import type { Project } from "../data/projects";
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const isGrid = projects.length > 1;
+---
+
+{isGrid ? (
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter md:grid-cols-2">
+    {projects.map((project) => (
+      <ProjectShowcase {...project} layout="stack" />
+    ))}
+  </div>
+) : (
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter">
+    {projects.map((project) => (
+      <ProjectShowcase {...project} />
+    ))}
+  </div>
+)}
