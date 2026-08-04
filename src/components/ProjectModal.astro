@@ -1,0 +1,125 @@
+---
+import ProjectLinks from "./ProjectLinks.astro";
+
+interface Props {
+  id: string;
+  title: string;
+  longDescription: string;
+  logo?: string;
+  logoInvert?: boolean;
+  showTitle?: boolean;
+  appStore?: string;
+  playStore?: string;
+  web?: string;
+  github?: string;
+}
+
+const {
+  id,
+  title,
+  longDescription,
+  logo,
+  logoInvert,
+  showTitle = true,
+  appStore,
+  playStore,
+  web,
+  github,
+} = Astro.props;
+
+// Blank lines separate paragraphs in the write-up.
+const paragraphs = longDescription.split(/\n\s*\n/).filter(Boolean);
+---
+
+<dialog
+  id={id}
+  class="project-modal m-auto w-[calc(100vw-2rem)] max-w-lg rounded-[28px] bg-white p-0 text-zinc-900 backdrop:bg-black/50"
+  aria-labelledby={`${id}-title`}
+>
+  <div class="relative px-8 pb-8 pt-10 sm:px-10 sm:pb-10">
+    <button
+      type="button"
+      data-modal-close
+      aria-label="Close"
+      class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-zinc-900"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div class="flex flex-col items-center text-center">
+      <div class="flex items-center gap-3">
+        {logo && (
+          <img
+            src={logo}
+            alt={`${title} logo`}
+            class={`h-14 w-auto max-w-full object-contain sm:h-16 ${showTitle ? "w-14 sm:w-16" : ""} ${logoInvert ? "invert" : ""}`}
+          />
+        )}
+        {showTitle && (
+          <h3 id={`${id}-title`} class="text-2xl font-semibold tracking-tight sm:text-3xl">
+            {title}
+          </h3>
+        )}
+      </div>
+      {!showTitle && <span id={`${id}-title`} class="sr-only">{title}</span>}
+
+      <div class="mt-5 space-y-4 text-left text-base leading-relaxed text-zinc-500">
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+
+      <ProjectLinks
+        title={title}
+        appStore={appStore}
+        playStore={playStore}
+        web={web}
+        github={github}
+        class="mt-7 flex flex-wrap justify-center gap-2"
+      />
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  .project-modal[open] {
+    animation: fade-scale 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .project-modal::backdrop {
+    backdrop-filter: blur(2px);
+  }
+</style>
+
+<script is:inline>
+  if (!window._projectModalInit) {
+    window._projectModalInit = true;
+
+    document.addEventListener('click', function (e) {
+      // Open
+      var opener = e.target.closest('[data-modal-open]');
+      if (opener) {
+        var dialog = document.getElementById(opener.getAttribute('data-modal-open'));
+        if (dialog) {
+          dialog.showModal();
+          window.posthog?.capture('project_learn_more_clicked', {
+            project_name: opener.getAttribute('data-ph-project'),
+          });
+        }
+        return;
+      }
+
+      // Close button
+      var closer = e.target.closest('[data-modal-close]');
+      if (closer) {
+        closer.closest('dialog')?.close();
+        return;
+      }
+
+      // Click on the backdrop (the dialog element itself, outside its content)
+      if (e.target.tagName === 'DIALOG' && e.target.classList.contains('project-modal')) {
+        e.target.close();
+      }
+
+    });
+  }
+</script>
