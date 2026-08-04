@@ -4,22 +4,24 @@ import type { Project } from "../data/projects";
 
 interface Props {
   projects: Project[];
+  /** Pass through to the tiles: link out directly instead of "Learn more". */
+  inlineLinks?: boolean;
 }
 
-const { projects } = Astro.props;
+const { projects, inlineLinks = false } = Astro.props;
 const isGrid = projects.length > 1;
 ---
 
 {isGrid ? (
   <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter md:grid-cols-2">
     {projects.map((project) => (
-      <ProjectShowcase {...project} layout="stack" />
+      <ProjectShowcase {...project} layout="stack" inlineLinks={inlineLinks} />
     ))}
   </div>
 ) : (
   <div class="mx-auto grid max-w-6xl grid-cols-1 gap-gutter px-gutter">
     {projects.map((project) => (
-      <ProjectShowcase {...project} />
+      <ProjectShowcase {...project} inlineLinks={inlineLinks} />
     ))}
   </div>
 )}
