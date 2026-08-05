@@ -13,6 +13,13 @@ interface Props {
   /** Screenshots bleed past the tile edge by default; set false to keep the
    *  image fully inside the padding (for framed or bordered art). */
   imageBleed?: boolean;
+  /** Let the screenshot fill the tile's full height (top edge to bottom edge),
+   *  cropping the sides instead of sitting in an `imageAspect` box. Row layout
+   *  only — below md the tile stacks and the image sizes itself. */
+  imageFullHeight?: boolean;
+  /** CSS object-position for a full-height screenshot — which part survives the
+   *  side crop, e.g. "left top", "left center", "20% top". Defaults to "left top". */
+  imagePosition?: string;
   bg?: string;
   textColor?: string;
   logoInvert?: boolean;
@@ -40,6 +47,8 @@ const {
   image,
   imageAspect = "1200 / 786",
   imageBleed = true,
+  imageFullHeight = false,
+  imagePosition = "left top",
   bg = "#F5F5F6",
   textColor,
   logoInvert,
@@ -64,14 +73,31 @@ const logoClass = showTitle
   ? "h-16 w-16 object-contain sm:h-20 sm:w-20"
   : "h-14 w-auto max-w-full object-contain sm:h-20";
 
+// Full height (row layout, md and up) hands the tile's vertical padding to the
+// text column so the image column can stretch the tile's whole height and run
+// off the right edge. The `imageAspect` box is dropped — a fixed ratio would
+// fight the stretch — so below md, where the tile is one column, the image just
+// sizes itself from its own dimensions.
+const fullHeight = imageFullHeight && !isStack;
+
 const articleClass = `grid h-full grid-cols-1 items-center gap-8 overflow-hidden rounded-[28px] px-8 py-12 ${
-  isStack ? "" : "md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-12 md:px-12 md:py-16"
-}`;
-const textWrapClass = `flex flex-col items-center text-center ${isStack ? "" : "md:items-start md:text-left"}`;
+  isStack ? "" : "md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-12 md:px-12"
+} ${isStack || fullHeight ? "" : "md:py-16"} ${fullHeight ? "md:py-0 md:pr-0" : ""}`;
+const textWrapClass = `flex flex-col items-center text-center ${isStack ? "" : "md:items-start md:text-left"} ${fullHeight ? "md:py-16" : ""}`;
 const rowJustifyClass = `mt-5 flex flex-wrap justify-center gap-2 ${isStack ? "" : "md:justify-start"}`;
 const imageWrapClass = isStack
   ? "flex w-full items-center justify-center"
-  : `flex items-center justify-center md:justify-end ${imageBleed ? "md:-my-16 md:-mr-12" : ""}`;
+  : `flex items-center justify-center md:justify-end ${
+      fullHeight
+        ? "overflow-hidden md:h-full md:self-stretch"
+        : imageBleed
+          ? "md:-my-16 md:-mr-12"
+          : ""
+    }`;
+const imageClass = fullHeight
+  ? "h-auto w-full object-contain md:h-full md:object-cover"
+  : "h-full w-full object-contain";
+const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
 ---
 
 <article class={articleClass} style={`background-color:${bg}`}>
@@ -141,13 +167,14 @@ const imageWrapClass = isStack
   {image && (
     <div
       class={imageWrapClass}
-      style={`aspect-ratio:${imageAspect}`}
+      style={fullHeight ? undefined : `aspect-ratio:${imageAspect}`}
     >
       <img
         src={image}
         alt={title}
         loading="lazy"
-        class="h-full w-full object-contain"
+        class={imageClass}
+        style={imageStyle}
       />
     </div>
   )}

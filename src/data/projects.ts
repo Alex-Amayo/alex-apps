@@ -13,6 +13,12 @@ export interface Project {
   image?: string;
   /** Let the screenshot bleed past the tile edge (default true) */
   imageBleed?: boolean;
+  /** Fill the tile's full height with the screenshot, cropping the sides
+   *  instead of fitting it inside an `imageAspect` box. Full-width tiles only. */
+  imageFullHeight?: boolean;
+  /** Which part of a full-height screenshot survives the side crop (CSS
+   *  object-position, e.g. "left top", "30% center"). Defaults to "left top". */
+  imagePosition?: string;
   /** CSS aspect-ratio for the screenshot's box (e.g. "1200 / 786"). Keeps card heights consistent; defaults to 1200 / 786. */
   imageAspect?: string;
   /** Tile background color */
@@ -40,6 +46,7 @@ export const projects: Project[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     logo: "/projects/keylens/logo.png",
     image: "/projects/keylens/screenshot.png",
+    imageFullHeight: true,
     bg: "#69C9C3",
     textColor: "#FFFFFF",
     tags: [],
