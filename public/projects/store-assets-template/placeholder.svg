@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 786" width="1200" height="786" role="img" aria-label="Placeholder image">
+  <rect x="24" y="24" width="1152" height="738" rx="36"
+        fill="#ffffff" fill-opacity="0.06"
+        stroke="#ffffff" stroke-opacity="0.28" stroke-width="3" stroke-dasharray="14 12"/>
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="10"
+     stroke-linecap="round" stroke-linejoin="round" transform="translate(600 366)">
+    <rect x="-96" y="-72" width="192" height="144" rx="18"/>
+    <circle cx="-38" cy="-20" r="20"/>
+    <path d="M-96 44 L-24 -14 L28 32 L58 8 L96 44"/>
+  </g>
+  <text x="600" y="512" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif"
+        font-size="34" font-weight="500" fill="#ffffff" fill-opacity="0.55">
+    Screenshot coming soon
+  </text>
+</svg>
