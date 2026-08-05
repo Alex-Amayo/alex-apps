@@ -41,7 +41,7 @@ export const projects: Project[] = [
     title: "KeyLens",
     owned: true,
     description:
-      "Build, play and learn chord progressions. Includes an in-app purchase that lets users play external DAWs, synthesizers, and MIDI hardware over Bluetooth LE or USB.",
+      "Play chords and scales. Connect to any DAW, synth, or groovebox over Bluetooth or USB.",
     longDescription:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     logo: "/projects/keylens/logo.png",
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     title: "Vervent",
     owned: false,
     description:
-      "Led mobile app development for Total Card (acquired by Vervent), bringing their web platform's credit card management features to iOS and Android.",
+      "Worked on the first Mobile App for Total Card (acquired by Vervent), bringing their web platform's credit card management features to iOS and Android.",
     longDescription:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.\n\nAliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus. Phasellus ultrices nulla quis nibh, quisque a lectus donec consectetuer ligula.",
     logo: "/projects/vervent/logo.png",
