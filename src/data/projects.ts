@@ -34,6 +34,8 @@ export interface Project {
   playStore?: string;
   web?: string;
   github?: string;
+  /** Figma file / Community listing — renders a "Figma" pill */
+  figma?: string;
 }
 
 export const projects: Project[] = [

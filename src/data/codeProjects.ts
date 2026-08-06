@@ -23,12 +23,12 @@ export const codeProjects: Project[] = [
       "A Figma template for Apple App Store and Google Play Store listings.",
     description:
       "Manage iOS, iPad, Android and Android Tablet Assets with a shared design system. Typography, colors, and copy are shared variables — change a value once and every store asset updates with it. Works great with Claude + Figma Plugin.",
-
     image: "/projects/store-assets-template/template_cover.png",
     imageAspect: "1920 / 1080",
     imageBleed: false,
     bg: "#241F35",
     textColor: "#FFFFFF",
     tags: [],
+    figma: "https://www.figma.com/community/file/1667308262485557026",
   },
 ];

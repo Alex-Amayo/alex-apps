@@ -29,6 +29,7 @@ interface Props {
   playStore?: string;
   web?: string;
   github?: string;
+  figma?: string;
   /** "row" (default) puts text and screenshot side by side, sized for a
    *  full-width tile. "stack" centers text above a full-width screenshot,
    *  for narrower tiles like a multi-project grid. */
@@ -58,6 +59,7 @@ const {
   playStore,
   web,
   github,
+  figma,
   layout = "row",
   inlineLinks = false,
 } = Astro.props;
@@ -143,6 +145,7 @@ const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
       playStore={playStore}
       web={web}
       github={github}
+      figma={figma}
       size="xs"
       class={rowJustifyClass}
     />
@@ -192,5 +195,6 @@ const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
     playStore={playStore}
     web={web}
     github={github}
+    figma={figma}
   />
 )}
