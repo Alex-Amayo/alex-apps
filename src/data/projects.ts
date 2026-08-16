@@ -52,8 +52,8 @@ export const projects: Project[] = [
     bg: "#69C9C3",
     textColor: "#FFFFFF",
     tags: [],
-    appStore: "https://apps.apple.com/us/app/keylens/id6761850903",
-    playStore: "#",
+    appStore: "https://apps.apple.com/us/app/key-lens/id6761850903",
+    playStore: "https://play.google.com/apps/testing/com.alexamayo.keylens",
     web: "https://keylensapp.com",
   },
   {
@@ -62,13 +62,13 @@ export const projects: Project[] = [
     description:
       "A credit card app for Citrine members with onboarding, spend tracking, statements, rewards, and push notifications.",
     longDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus luctus urna sed urna ultricies ac tempor dui sagittis. In condimentum facilisis porta. Sed nec diam eu diam mattis viverra.\n\nNulla fringilla, orci ac euismod semper, magna diam porttitor mauris, quis sollicitudin sapien justo in libero. Vestibulum mollis mauris enim, quis pulvinar tortor faucibus at.",
+      "I joined Citrine, a startup in New York, as a mobile engineer, helping launch their iOS app and giving members access to their credit accounts on mobile.\n\nStartups move fast. Every decision had to earn its place, and the work was finding the highest-leverage opportunities to improve the product.\n\nI built the analytics layer and spent real time in it, watching where people hesitated, where they dropped, and what they did instead of what we assumed they'd do. I brought those insights to product and marketing, working together to identify opportunities, prioritize optimizations, and measure their impact.",
     logo: "/projects/citrine/logo.jpeg",
     image: "/projects/citrine/screenshot.png",
     bg: "#BD7901",
     textColor: "#FFFFFF",
     tags: [],
-    appStore: "https://apps.apple.com/us/app/citrine-members/id6550923036",
+    // Pulled from the App Store; the listing 404s.
   },
   {
     title: "Vervent",
@@ -76,15 +76,13 @@ export const projects: Project[] = [
     description:
       "Worked on the first Mobile App for Total Card (acquired by Vervent), bringing their web platform's credit card management features to iOS and Android.",
     longDescription:
-      "The web app already existed. My job was to put it in people's pockets.\n\nI joined Vervent in South Dakota, then still Total Card, as the team's only React Native engineer. I built the mobile app from the ground up, owning frontend architecture, native integrations, and the release pipeline.\n\nA lot of the work happened outside the editor. The app ran through compliance, product, and leadership as much as it ran through engineering.\n\nI gathered requirements with business and product stakeholders, then worked cross-functionally with design and backend developers to turn those requirements into shipped features. I presented progress to senior leadership with remote offices dialed in, then walked those same stakeholders through acceptance testing until they signed off.\n\nI wasn't just building the app. I was involved from requirements through release.",
+      "The web app already existed. My job was to put it in people's pockets.\n\nI joined Vervent in South Dakota, then still Total Card, as the team's first React Native engineer. I built the mobile app from the ground up, owning frontend architecture, native integrations, and the release pipeline.\n\nA lot of the work happened outside the editor. The app ran through compliance, product, and executive leadership as much as it ran through engineering.\n\n",
     logo: "/projects/vervent/logo.png",
     image: "/projects/vervent/screenshot.webp",
     imageAspect: "1200 / 680",
     bg: "#FFFFFF",
     showTitle: false,
     tags: [],
-    appStore: "https://apps.apple.com/us/app/total-card/id1574751566",
-    playStore:
-      "https://play.google.com/store/apps/details?id=com.vervent.total&hl=en_US",
+    // Store links dropped: the shipped app no longer reflects this work.
   },
 ];

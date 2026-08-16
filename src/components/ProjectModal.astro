@@ -31,6 +31,10 @@ const {
 
 // Blank lines separate paragraphs in the write-up.
 const paragraphs = longDescription.split(/\n\s*\n/).filter(Boolean);
+
+// Projects with no links at all would otherwise leave the row's top margin
+// as dead space under the last paragraph.
+const hasLinks = Boolean(appStore || playStore || web || github || figma);
 ---
 
 <dialog
@@ -71,15 +75,17 @@ const paragraphs = longDescription.split(/\n\s*\n/).filter(Boolean);
         {paragraphs.map((p) => <p>{p}</p>)}
       </div>
 
-      <ProjectLinks
-        title={title}
-        appStore={appStore}
-        playStore={playStore}
-        web={web}
-        github={github}
-        figma={figma}
-        class="mt-7 flex flex-wrap justify-center gap-2"
-      />
+      {hasLinks && (
+        <ProjectLinks
+          title={title}
+          appStore={appStore}
+          playStore={playStore}
+          web={web}
+          github={github}
+          figma={figma}
+          class="mt-7 flex flex-wrap justify-center gap-2"
+        />
+      )}
     </div>
   </div>
 </dialog>
