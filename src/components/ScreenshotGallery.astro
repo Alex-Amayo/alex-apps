@@ -18,9 +18,13 @@ const { screenshots, title, class: className = "" } = Astro.props;
     class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar"
   >
     {
+      /* Width drives the slide, not the caption: sizing from the image's
+         height would let a long label stretch its own slide wider than the
+         rest, leaving the screenshots unevenly spaced. 184px keeps the
+         1206x2622 box at the ~400px tall it needs to fit the dialog. */
       screenshots.map((shot) => (
-        <div class="slide shrink-0 basis-[58%] snap-center sm:basis-auto">
-          <div class="aspect-[1206/2622] w-full overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50 sm:h-[400px] sm:w-auto">
+        <div class="slide shrink-0 basis-[58%] snap-center sm:w-[184px] sm:basis-auto">
+          <div class="aspect-[1206/2622] w-full overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50">
             <img
               src={shot.src}
               alt={`${title} — ${shot.label}`}
