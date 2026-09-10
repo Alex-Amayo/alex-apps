@@ -5,6 +5,8 @@ export interface Project {
   subtitle?: string;
   /** Longer write-up shown in the "Learn more" modal. Blank lines split paragraphs. */
   longDescription?: string;
+  /** Phone screenshots for the "Learn more" modal gallery. */
+  screenshots?: { src: string; label: string }[];
   /** true = "My Apps"; false = "Apps I've worked on" */
   owned?: boolean;
   /** App logo/icon, shown above the title */
@@ -63,6 +65,16 @@ export const projects: Project[] = [
       "A credit card app for Citrine members with onboarding, spend tracking, statements, rewards, and push notifications.",
     longDescription:
       "I joined Citrine, a startup in New York, as a mobile engineer, helping launch their iOS app and giving members access to their credit accounts on mobile.\n\nStartups move fast. Every decision had to earn its place, and the work was finding the highest-leverage opportunities to improve the product.\n\nI built the analytics layer and spent real time in it, watching where people hesitated, where they dropped, and what they did instead of what we assumed they'd do. I brought those insights to product and marketing, working together to identify opportunities, prioritize optimizations, and measure their impact.",
+    screenshots: [
+      { src: "/projects/citrine/screenshots/01-welcome.webp", label: "Welcome" },
+      { src: "/projects/citrine/screenshots/02-home.webp", label: "Home" },
+      { src: "/projects/citrine/screenshots/03-card.webp", label: "The Card" },
+      { src: "/projects/citrine/screenshots/04-channels.webp", label: "Channels" },
+      { src: "/projects/citrine/screenshots/05-benefits.webp", label: "Benefits" },
+      { src: "/projects/citrine/screenshots/06-city-guides.webp", label: "City Guides" },
+      { src: "/projects/citrine/screenshots/07-browse-places.webp", label: "Browse Places" },
+      { src: "/projects/citrine/screenshots/08-request-booking.webp", label: "Request a Booking" },
+    ],
     logo: "/projects/citrine/logo.jpeg",
     image: "/projects/citrine/screenshot.png",
     bg: "#BD7901",

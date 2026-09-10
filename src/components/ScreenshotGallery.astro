@@ -1,6 +1,11 @@
 ---
+interface Screenshot {
+  src: string;
+  label: string;
+}
+
 interface Props {
-  screenshots: string[];
+  screenshots: Screenshot[];
   title: string;
   class?: string;
 }
@@ -10,23 +15,26 @@ const { screenshots, title, class: className = "" } = Astro.props;
 
 <screenshot-gallery class:list={["block", className]}>
   <div
-    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:overflow-visible lg:snap-none"
+    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar"
   >
     {
-      screenshots.map((src, i) => (
-        <div class="slide aspect-[1284/2778] shrink-0 basis-[72%] snap-center overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50 sm:basis-[42%] lg:basis-0 lg:grow">
-          <img
-            src={src}
-            alt={`${title} screenshot ${i + 1}`}
-            loading="lazy"
-            class="h-full w-full object-cover"
-          />
+      screenshots.map((shot) => (
+        <div class="slide shrink-0 basis-[58%] snap-center sm:basis-auto">
+          <div class="aspect-[1206/2622] w-full overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50 sm:h-[400px] sm:w-auto">
+            <img
+              src={shot.src}
+              alt={`${title} — ${shot.label}`}
+              loading="lazy"
+              class="h-full w-full object-contain"
+            />
+          </div>
+          <p class="mt-2 text-center text-xs text-zinc-500">{shot.label}</p>
         </div>
       ))
     }
   </div>
 
-  <div class="controls mt-4 flex items-center justify-center gap-3 lg:hidden">
+  <div class="controls mt-4 flex items-center justify-center gap-3">
     <button
       type="button"
       class="prev inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
@@ -37,17 +45,9 @@ const { screenshots, title, class: className = "" } = Astro.props;
       </svg>
     </button>
 
-    <div class="dots flex items-center gap-2">
-      {
-        screenshots.map((_, i) => (
-          <button
-            type="button"
-            class="dot h-2 w-2 rounded-full bg-zinc-300 transition-colors"
-            aria-label={`Go to screenshot ${i + 1}`}
-          />
-        ))
-      }
-    </div>
+    {/* One dot per page, not per screenshot — how many slides fit on a page
+        depends on the breakpoint, so the script fills this in at runtime. */}
+    <div class="dots flex items-center gap-2"></div>
 
     <button
       type="button"
@@ -66,46 +66,82 @@ const { screenshots, title, class: className = "" } = Astro.props;
     connectedCallback() {
       const scroller = this.querySelector<HTMLElement>(".scroller");
       const slides = Array.from(this.querySelectorAll<HTMLElement>(".slide"));
-      const dots = Array.from(this.querySelectorAll<HTMLButtonElement>(".dot"));
+      const dotsWrap = this.querySelector<HTMLElement>(".dots");
       const prev = this.querySelector<HTMLButtonElement>(".prev");
       const next = this.querySelector<HTMLButtonElement>(".next");
       if (!scroller || slides.length < 2) return;
 
-      let current = 0;
+      // Sub-pixel layout means scroll positions never land on exact integers.
+      const EPS = 2;
 
-      const setActive = (idx: number) => {
-        current = idx;
+      // A "page" is one scroller-width of slides, which is what prev/next step
+      // by — so three visible screenshots out of six is two pages, not six.
+      const pageCount = () =>
+        Math.max(1, Math.ceil((scroller.scrollWidth - EPS) / scroller.clientWidth));
+      const currentPage = () => Math.round(scroller.scrollLeft / scroller.clientWidth);
+
+      let dots: HTMLButtonElement[] = [];
+
+      const buildDots = () => {
+        const count = pageCount();
+        if (!dotsWrap || dots.length === count) return;
+        dotsWrap.replaceChildren();
+        dots = Array.from({ length: count }, (_, i) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "dot h-2 w-2 rounded-full bg-zinc-300 transition-colors";
+          dot.setAttribute("aria-label", `Go to page ${i + 1} of ${count}`);
+          dot.addEventListener("click", () =>
+            scroller.scrollTo({ left: i * scroller.clientWidth, behavior: "smooth" })
+          );
+          dotsWrap.append(dot);
+          return dot;
+        });
+      };
+
+      const sync = () => {
+        // Nothing measurable while the dialog is still closed; the
+        // ResizeObserver calls back the moment it has a size.
+        if (!scroller.clientWidth) return;
+        buildDots();
+        const idx = currentPage();
         dots.forEach((d, i) => {
           d.classList.toggle("bg-sky-500", i === idx);
           d.classList.toggle("bg-zinc-300", i !== idx);
         });
-        if (prev) prev.disabled = idx === 0;
-        if (next) next.disabled = idx === slides.length - 1;
+        // Disable from the scroll position rather than the page index: the last
+        // page is usually a partial one, so it never reaches pageCount - 1.
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        if (prev) prev.disabled = scroller.scrollLeft <= EPS;
+        if (next) next.disabled = scroller.scrollLeft >= maxScroll - EPS;
       };
 
-      const scrollToIndex = (idx: number) => {
-        const clamped = Math.max(0, Math.min(slides.length - 1, idx));
-        slides[clamped].scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
-      };
+      // Drive the scroller directly. scrollIntoView() would walk every
+      // scrollable ancestor and drag the modal body vertically along with it.
+      const page = (dir: number) =>
+        scroller.scrollBy({ left: dir * scroller.clientWidth, behavior: "smooth" });
 
-      dots.forEach((dot, i) => dot.addEventListener("click", () => scrollToIndex(i)));
-      prev?.addEventListener("click", () => scrollToIndex(current - 1));
-      next?.addEventListener("click", () => scrollToIndex(current + 1));
+      prev?.addEventListener("click", () => page(-1));
+      next?.addEventListener("click", () => page(1));
 
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) setActive(slides.indexOf(e.target as HTMLElement));
+      let queued = false;
+      scroller.addEventListener(
+        "scroll",
+        () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(() => {
+            queued = false;
+            sync();
           });
         },
-        { root: scroller, threshold: 0.6 }
+        { passive: true }
       );
-      slides.forEach((s) => io.observe(s));
-      setActive(0);
+
+      // The gallery lives in a closed <dialog>, so at connect time it has no
+      // layout to measure — re-sync once it has been given a size.
+      new ResizeObserver(sync).observe(scroller);
+      sync();
     }
   }
 

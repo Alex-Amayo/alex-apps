@@ -7,6 +7,8 @@ interface Props {
   description: string;
   subtitle?: string;
   longDescription?: string;
+  /** Phone screenshots for the "Learn more" modal gallery. */
+  screenshots?: { src: string; label: string }[];
   logo?: string;
   image?: string;
   imageAspect?: string;
@@ -44,6 +46,7 @@ const {
   description,
   subtitle,
   longDescription = "",
+  screenshots,
   logo,
   image,
   imageAspect = "1200 / 786",
@@ -188,6 +191,7 @@ const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
     id={modalId}
     title={title}
     longDescription={longDescription}
+    screenshots={screenshots}
     logo={logo}
     logoInvert={logoInvert}
     showTitle={showTitle}
