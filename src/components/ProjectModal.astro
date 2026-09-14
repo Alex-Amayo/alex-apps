@@ -1,12 +1,10 @@
 ---
 import ProjectLinks from "./ProjectLinks.astro";
-import ScreenshotGallery from "./ScreenshotGallery.astro";
 
 interface Props {
   id: string;
   title: string;
   longDescription: string;
-  screenshots?: { src: string; label: string }[];
   logo?: string;
   logoInvert?: boolean;
   showTitle?: boolean;
@@ -21,7 +19,6 @@ const {
   id,
   title,
   longDescription,
-  screenshots = [],
   logo,
   logoInvert,
   showTitle = true,
@@ -39,21 +36,16 @@ const paragraphs = longDescription.split(/\n\s*\n/).filter(Boolean);
 // as dead space under the last paragraph.
 const hasLinks = Boolean(appStore || playStore || web || github || figma);
 
-// The gallery is tall enough to push the dialog past a short viewport, so it
-// also buys the modal extra width and a scrolling body. Projects without
-// screenshots keep the narrower, self-sizing dialog.
-// The scroll lives on the body rather than the dialog so the close button,
+// A long write-up can outgrow a short viewport, so the body scrolls. The
+// scroll lives on the body rather than the dialog so the close button,
 // positioned against the dialog, stays put while the content moves. The dialog
 // needs no `relative` for that — a modal one is already `position: fixed`, and
 // adding `relative` would override that and drop it back into page flow.
-const hasShots = screenshots.length > 0;
-const dialogSize = hasShots ? "max-w-2xl max-h-[85vh]" : "max-w-lg";
-const bodyScroll = hasShots ? "overflow-y-auto" : "";
 ---
 
 <dialog
   id={id}
-  class={`project-modal m-auto w-[calc(100vw-2rem)] open:flex open:flex-col ${dialogSize} rounded-[28px] bg-white p-0 text-zinc-900 backdrop:bg-black/50`}
+  class={`project-modal m-auto w-[calc(100vw-2rem)] open:flex open:flex-col max-h-[85vh] max-w-lg rounded-[28px] bg-white p-0 text-zinc-900 backdrop:bg-black/50`}
   aria-labelledby={`${id}-title`}
 >
   <button
@@ -67,7 +59,7 @@ const bodyScroll = hasShots ? "overflow-y-auto" : "";
     </svg>
   </button>
 
-  <div class={`px-8 pb-8 pt-10 sm:px-10 sm:pb-10 ${bodyScroll}`}>
+  <div class={`px-8 pb-8 pt-10 sm:px-10 sm:pb-10 overflow-y-auto`}>
     <div class="flex flex-col items-center text-center">
       <div class="flex items-center gap-3">
         {logo && (
@@ -88,14 +80,6 @@ const bodyScroll = hasShots ? "overflow-y-auto" : "";
       <div class="mt-5 space-y-4 text-left text-base leading-relaxed text-zinc-500">
         {paragraphs.map((p) => <p>{p}</p>)}
       </div>
-
-      {hasShots && (
-        <ScreenshotGallery
-          screenshots={screenshots}
-          title={title}
-          class="mt-7 w-full"
-        />
-      )}
 
       {hasLinks && (
         <ProjectLinks

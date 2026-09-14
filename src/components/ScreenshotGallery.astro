@@ -13,36 +13,39 @@ interface Props {
 const { screenshots, title, class: className = "" } = Astro.props;
 ---
 
+{/* Lives inside a project tile and runs edge to edge across it: the scroller's
+    inline padding lines the first screenshot up with the tile's text, and the
+    rest run off the right edge. Captions and controls draw in currentColor so
+    the gallery follows whatever text color the tile sets. */}
 <screenshot-gallery class:list={["block", className]}>
   <div
-    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar"
+    class="scroller flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-8 px-8 no-scrollbar md:gap-5 md:scroll-px-12 md:px-12"
   >
     {
       /* Width drives the slide, not the caption: sizing from the image's
          height would let a long label stretch its own slide wider than the
-         rest, leaving the screenshots unevenly spaced. 184px keeps the
-         1206x2622 box at the ~400px tall it needs to fit the dialog. */
+         rest, leaving the screenshots unevenly spaced. */
       screenshots.map((shot) => (
-        <div class="slide shrink-0 basis-[58%] snap-center sm:w-[184px] sm:basis-auto">
-          <div class="aspect-[1206/2622] w-full overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50">
+        <div class="slide shrink-0 basis-[60%] snap-start sm:w-[220px] sm:basis-auto lg:w-[240px]">
+          <div class="aspect-[750/1631] w-full overflow-hidden rounded-[1.6rem] bg-white shadow-xl shadow-black/15 ring-1 ring-black/5">
             <img
               src={shot.src}
               alt={`${title} — ${shot.label}`}
               loading="lazy"
-              class="h-full w-full object-contain"
+              class="h-full w-full object-cover"
             />
           </div>
-          <p class="mt-2 text-center text-xs text-zinc-500">{shot.label}</p>
+          <p class="mt-3 text-center text-sm font-medium opacity-80">{shot.label}</p>
         </div>
       ))
     }
   </div>
 
-  <div class="controls mt-4 flex items-center justify-center gap-3">
+  <div class="controls mt-6 flex items-center justify-center gap-3 px-8">
     <button
       type="button"
-      class="prev inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
-      aria-label="Previous screenshot"
+      class="prev inline-flex h-9 w-9 items-center justify-center rounded-full border border-current/30 transition-colors hover:bg-current/10 disabled:opacity-30 disabled:hover:bg-transparent"
+      aria-label="Previous screenshots"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6" />
@@ -55,8 +58,8 @@ const { screenshots, title, class: className = "" } = Astro.props;
 
     <button
       type="button"
-      class="next inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 disabled:opacity-30"
-      aria-label="Next screenshot"
+      class="next inline-flex h-9 w-9 items-center justify-center rounded-full border border-current/30 transition-colors hover:bg-current/10 disabled:opacity-30 disabled:hover:bg-transparent"
+      aria-label="Next screenshots"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6" />
@@ -73,16 +76,30 @@ const { screenshots, title, class: className = "" } = Astro.props;
       const dotsWrap = this.querySelector<HTMLElement>(".dots");
       const prev = this.querySelector<HTMLButtonElement>(".prev");
       const next = this.querySelector<HTMLButtonElement>(".next");
-      if (!scroller || slides.length < 2) return;
+      const controls = this.querySelector<HTMLElement>(".controls");
+      if (!scroller || slides.length < 2) {
+        controls?.remove();
+        return;
+      }
 
       // Sub-pixel layout means scroll positions never land on exact integers.
       const EPS = 2;
 
-      // A "page" is one scroller-width of slides, which is what prev/next step
-      // by — so three visible screenshots out of six is two pages, not six.
-      const pageCount = () =>
-        Math.max(1, Math.ceil((scroller.scrollWidth - EPS) / scroller.clientWidth));
-      const currentPage = () => Math.round(scroller.scrollLeft / scroller.clientWidth);
+      // A "page" is the visible run of slides — the scroller's width minus its
+      // inline padding — which is what prev/next step by, so four visible
+      // screenshots out of eight is two pages, not eight.
+      const pageStep = () => {
+        const style = getComputedStyle(scroller);
+        const inset = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        return Math.max(1, scroller.clientWidth - inset);
+      };
+      const maxScroll = () => scroller.scrollWidth - scroller.clientWidth;
+      const pageCount = () => 1 + Math.ceil((maxScroll() - EPS) / pageStep());
+      const currentPage = () => {
+        // The last page is usually a partial one, so pin it by position.
+        if (scroller.scrollLeft >= maxScroll() - EPS) return pageCount() - 1;
+        return Math.round(scroller.scrollLeft / pageStep());
+      };
 
       let dots: HTMLButtonElement[] = [];
 
@@ -93,10 +110,10 @@ const { screenshots, title, class: className = "" } = Astro.props;
         dots = Array.from({ length: count }, (_, i) => {
           const dot = document.createElement("button");
           dot.type = "button";
-          dot.className = "dot h-2 w-2 rounded-full bg-zinc-300 transition-colors";
+          dot.className = "dot h-2 w-2 rounded-full bg-current opacity-30 transition-opacity";
           dot.setAttribute("aria-label", `Go to page ${i + 1} of ${count}`);
           dot.addEventListener("click", () =>
-            scroller.scrollTo({ left: i * scroller.clientWidth, behavior: "smooth" })
+            scroller.scrollTo({ left: i * pageStep(), behavior: "smooth" })
           );
           dotsWrap.append(dot);
           return dot;
@@ -104,26 +121,23 @@ const { screenshots, title, class: className = "" } = Astro.props;
       };
 
       const sync = () => {
-        // Nothing measurable while the dialog is still closed; the
-        // ResizeObserver calls back the moment it has a size.
         if (!scroller.clientWidth) return;
+        // Everything fits (a wide screen, or only a few screenshots): no paging.
+        if (controls) controls.hidden = maxScroll() <= EPS;
         buildDots();
         const idx = currentPage();
         dots.forEach((d, i) => {
-          d.classList.toggle("bg-sky-500", i === idx);
-          d.classList.toggle("bg-zinc-300", i !== idx);
+          d.classList.toggle("opacity-100", i === idx);
+          d.classList.toggle("opacity-30", i !== idx);
         });
-        // Disable from the scroll position rather than the page index: the last
-        // page is usually a partial one, so it never reaches pageCount - 1.
-        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
         if (prev) prev.disabled = scroller.scrollLeft <= EPS;
-        if (next) next.disabled = scroller.scrollLeft >= maxScroll - EPS;
+        if (next) next.disabled = scroller.scrollLeft >= maxScroll() - EPS;
       };
 
       // Drive the scroller directly. scrollIntoView() would walk every
-      // scrollable ancestor and drag the modal body vertically along with it.
+      // scrollable ancestor and drag the page vertically along with it.
       const page = (dir: number) =>
-        scroller.scrollBy({ left: dir * scroller.clientWidth, behavior: "smooth" });
+        scroller.scrollBy({ left: dir * pageStep(), behavior: "smooth" });
 
       prev?.addEventListener("click", () => page(-1));
       next?.addEventListener("click", () => page(1));
@@ -142,8 +156,7 @@ const { screenshots, title, class: className = "" } = Astro.props;
         { passive: true }
       );
 
-      // The gallery lives in a closed <dialog>, so at connect time it has no
-      // layout to measure — re-sync once it has been given a size.
+      // Page count depends on the breakpoint, so recount whenever it resizes.
       new ResizeObserver(sync).observe(scroller);
       sync();
     }
