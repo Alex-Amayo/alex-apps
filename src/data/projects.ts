@@ -5,7 +5,8 @@ export interface Project {
   subtitle?: string;
   /** Longer write-up shown in the "Learn more" modal. Blank lines split paragraphs. */
   longDescription?: string;
-  /** Phone screenshots for the "Learn more" modal gallery. */
+  /** Phone screenshots. On a full-width tile they replace `image` with a
+   *  scrolling strip under the text. */
   screenshots?: { src: string; label: string }[];
   /** true = "My Apps"; false = "Apps I've worked on" */
   owned?: boolean;
@@ -76,7 +77,6 @@ export const projects: Project[] = [
       { src: "/projects/citrine/screenshots/08-hotel-booking.webp", label: "Hotel Booking" },
     ],
     logo: "/projects/citrine/logo.jpeg",
-    image: "/projects/citrine/screenshot.png",
     bg: "#BD7901",
     textColor: "#FFFFFF",
     tags: [],

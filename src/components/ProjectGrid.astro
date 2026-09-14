@@ -6,10 +6,13 @@ interface Props {
   projects: Project[];
   /** Pass through to the tiles: link out directly instead of "Learn more". */
   inlineLinks?: boolean;
+  /** 2 (default) tiles several projects side by side; 1 gives every project
+   *  its own full-width tile. */
+  columns?: 1 | 2;
 }
 
-const { projects, inlineLinks = false } = Astro.props;
-const isGrid = projects.length > 1;
+const { projects, inlineLinks = false, columns = 2 } = Astro.props;
+const isGrid = columns === 2 && projects.length > 1;
 ---
 
 {isGrid ? (
