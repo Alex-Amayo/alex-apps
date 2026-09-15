@@ -1,3 +1,5 @@
+import type { FrameName } from "./frames";
+
 export interface Project {
   title: string;
   description: string;
@@ -16,12 +18,12 @@ export interface Project {
   image?: string;
   /** Let the screenshot bleed past the tile edge (default true) */
   imageBleed?: boolean;
-  /** Fill the tile's full height with the screenshot, cropping the sides
-   *  instead of fitting it inside an `imageAspect` box. Full-width tiles only. */
-  imageFullHeight?: boolean;
-  /** Which part of a full-height screenshot survives the side crop (CSS
-   *  object-position, e.g. "left top", "30% center"). Defaults to "left top". */
-  imagePosition?: string;
+  /** Two screenshots in device frames, shown instead of `image`: the first is
+   *  the large device at the back, the second sits in front of it. */
+  devices?: [
+    { frame: FrameName; src: string; label: string },
+    { frame: FrameName; src: string; label: string },
+  ];
   /** CSS aspect-ratio for the screenshot's box (e.g. "1200 / 786"). Keeps card heights consistent; defaults to 1200 / 786. */
   imageAspect?: string;
   /** Tile background color */
@@ -50,8 +52,10 @@ export const projects: Project[] = [
     longDescription:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     logo: "/projects/keylens/logo.png",
-    image: "/projects/keylens/screenshot.png",
-    imageFullHeight: true,
+    devices: [
+      { frame: "web", src: "/projects/keylens/screenshots/web/03-remote.png", label: "Remote on the web" },
+      { frame: "ios-phone", src: "/projects/keylens/screenshots/ios-phone/07-remote.png", label: "Remote on iPhone" },
+    ],
     bg: "#69C9C3",
     textColor: "#FFFFFF",
     tags: [],

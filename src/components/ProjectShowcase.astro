@@ -2,6 +2,14 @@
 import ProjectModal from "./ProjectModal.astro";
 import ProjectLinks from "./ProjectLinks.astro";
 import ScreenshotGallery from "./ScreenshotGallery.astro";
+import DeviceFrame from "./DeviceFrame.astro";
+import { frames, type FrameName } from "../data/frames";
+
+interface Device {
+  frame: FrameName;
+  src: string;
+  label: string;
+}
 
 interface Props {
   title: string;
@@ -17,13 +25,10 @@ interface Props {
   /** Screenshots bleed past the tile edge by default; set false to keep the
    *  image fully inside the padding (for framed or bordered art). */
   imageBleed?: boolean;
-  /** Let the screenshot fill the tile's full height (top edge to bottom edge),
-   *  cropping the sides instead of sitting in an `imageAspect` box. Row layout
-   *  only — below md the tile stacks and the image sizes itself. */
-  imageFullHeight?: boolean;
-  /** CSS object-position for a full-height screenshot — which part survives the
-   *  side crop, e.g. "left top", "left center", "20% top". Defaults to "left top". */
-  imagePosition?: string;
+  /** Two screenshots in device frames, shown in place of `image`: the first is
+   *  the large device at the back, the second sits in front of its lower-left
+   *  corner. */
+  devices?: [Device, Device];
   bg?: string;
   textColor?: string;
   logoInvert?: boolean;
@@ -53,8 +58,7 @@ const {
   image,
   imageAspect = "1200 / 786",
   imageBleed = true,
-  imageFullHeight = false,
-  imagePosition = "left top",
+  devices,
   bg = "#F5F5F6",
   textColor,
   logoInvert,
@@ -84,33 +88,29 @@ const logoClass = showTitle
   ? "h-16 w-16 rounded-[22%] object-contain sm:h-20 sm:w-20"
   : "h-14 w-auto max-w-full object-contain sm:h-20";
 
-// Full height (row layout, md and up) hands the tile's vertical padding to the
-// text column so the image column can stretch the tile's whole height and run
-// off the right edge. The `imageAspect` box is dropped — a fixed ratio would
-// fight the stretch — so below md, where the tile is one column, the image just
-// sizes itself from its own dimensions.
-const fullHeight = imageFullHeight && !isStack;
+// Lay out the device pair in units of the composition's width: the back device
+// takes most of it from the top-right corner, and the front one stands on the
+// bottom edge, low enough to overlap the back device's lower-left corner.
+const BACK_WIDTH = 84;
+const FRONT_WIDTH = 28;
+const OVERHANG = 10;
+const deviceLayout = devices && (() => {
+  const [back, front] = devices.map((d) => frames[d.frame]);
+  const backHeight = BACK_WIDTH * (back.height / back.width);
+  const frontHeight = FRONT_WIDTH * (front.height / front.width);
+  return { aspect: `100 / ${Math.max(backHeight + OVERHANG, frontHeight)}` };
+})();
 
 const articleClass = hasGallery
   ? "flex h-full flex-col gap-10 overflow-hidden rounded-[28px] py-12 md:py-16"
   : `grid h-full grid-cols-1 items-center gap-8 overflow-hidden rounded-[28px] px-8 py-12 ${
   isStack ? "" : "md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-12 md:px-12"
-} ${isStack || fullHeight ? "" : "md:py-16"} ${fullHeight ? "md:py-0 md:pr-0" : ""}`;
-const textWrapClass = `flex flex-col items-center text-center ${isStack ? "" : "md:items-start md:text-left"} ${fullHeight ? "md:py-16" : ""} ${hasGallery ? "px-8 md:px-12" : ""}`;
+} ${isStack ? "" : "md:py-16"}`;
+const textWrapClass = `flex flex-col items-center text-center ${isStack ? "" : "md:items-start md:text-left"} ${hasGallery ? "px-8 md:px-12" : ""}`;
 const rowJustifyClass = `mt-5 flex flex-wrap justify-center gap-2 ${isStack ? "" : "md:justify-start"}`;
 const imageWrapClass = isStack
   ? "flex w-full items-center justify-center"
-  : `flex items-center justify-center md:justify-end ${
-      fullHeight
-        ? "overflow-hidden md:h-full md:self-stretch"
-        : imageBleed
-          ? "md:-my-16 md:-mr-12"
-          : ""
-    }`;
-const imageClass = fullHeight
-  ? "h-auto w-full object-contain md:h-full md:object-cover"
-  : "h-full w-full object-contain";
-const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
+  : `flex items-center justify-center md:justify-end ${imageBleed ? "md:-my-16 md:-mr-12" : ""}`;
 ---
 
 <article
@@ -182,18 +182,20 @@ const imageStyle = fullHeight ? `object-position:${imagePosition}` : undefined;
     <ScreenshotGallery screenshots={screenshots} title={title} />
   )}
 
-  {image && !hasGallery && (
-    <div
-      class={imageWrapClass}
-      style={fullHeight ? undefined : `aspect-ratio:${imageAspect}`}
-    >
-      <img
-        src={image}
-        alt={title}
-        loading="lazy"
-        class={imageClass}
-        style={imageStyle}
-      />
+  {devices && deviceLayout && !hasGallery && (
+    <div class="relative w-full" style={`aspect-ratio:${deviceLayout.aspect}`}>
+      <div class="absolute right-0 top-0 drop-shadow-xl" style={`width:${BACK_WIDTH}%`}>
+        <DeviceFrame frame={devices[0].frame} src={devices[0].src} alt={`${title} — ${devices[0].label}`} />
+      </div>
+      <div class="absolute bottom-0 left-0 drop-shadow-2xl" style={`width:${FRONT_WIDTH}%`}>
+        <DeviceFrame frame={devices[1].frame} src={devices[1].src} alt={`${title} — ${devices[1].label}`} />
+      </div>
+    </div>
+  )}
+
+  {image && !devices && !hasGallery && (
+    <div class={imageWrapClass} style={`aspect-ratio:${imageAspect}`}>
+      <img src={image} alt={title} loading="lazy" class="h-full w-full object-contain" />
     </div>
   )}
 </article>

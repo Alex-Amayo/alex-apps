@@ -1,0 +1,43 @@
+---
+import { frames, type FrameName } from "../data/frames";
+
+interface Props {
+  frame: FrameName;
+  /** Screenshot shown on the frame's screen. */
+  src: string;
+  alt: string;
+  class?: string;
+}
+
+const { frame: name, src, alt, class: className = "" } = Astro.props;
+const frame = frames[name];
+const { screen } = frame;
+
+// Percentages of the frame, so the device scales with whatever width its
+// container gives it. The screenshot bleeds half a frame pixel past the screen
+// on every side to cover the placeholder's anti-aliased edge; the bezel hides
+// the overlap.
+const pct = (n: number, of: number) => `${(n / of) * 100}%`;
+const bleed = 0.5;
+const screenStyle = [
+  `left:${pct(screen.x - bleed, frame.width)}`,
+  `top:${pct(screen.y - bleed, frame.height)}`,
+  `width:${pct(screen.width + bleed * 2, frame.width)}`,
+  `height:${pct(screen.height + bleed * 2, frame.height)}`,
+  `border-radius:${pct(screen.radius, screen.width)} / ${pct(screen.radius, screen.height)}`,
+].join(";");
+---
+
+<div
+  class:list={["relative", className]}
+  style={`aspect-ratio:${frame.width} / ${frame.height}`}
+>
+  <img src={frame.src} alt="" loading="lazy" class="absolute inset-0 h-full w-full" />
+  <img
+    src={src}
+    alt={alt}
+    loading="lazy"
+    class="absolute object-cover object-top"
+    style={screenStyle}
+  />
+</div>
