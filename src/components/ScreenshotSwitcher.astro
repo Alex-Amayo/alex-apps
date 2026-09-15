@@ -17,9 +17,20 @@ const idBase = `shots-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   <ScreenshotGallery screenshots={sets[0].shots} frame={sets[0].frame} title={title} />
 ) : (
   <screenshot-switcher class="block">
-    {/* Segmented control, drawn in currentColor like the gallery controls so it
-        works on light and dark tiles alike. */}
-    <div class="mb-8 flex justify-center px-8">
+    {sets.map((set, i) => (
+      <div
+        role="tabpanel"
+        id={`${idBase}-panel-${i}`}
+        aria-labelledby={`${idBase}-tab-${i}`}
+        hidden={i !== 0}
+      >
+        <ScreenshotGallery screenshots={set.shots} frame={set.frame} title={title} />
+      </div>
+    ))}
+
+    {/* Segmented control under the strip's paging controls, drawn in
+        currentColor like them so it works on light and dark tiles alike. */}
+    <div class="mt-8 flex justify-center px-8">
       <div role="tablist" aria-label={`${title} screenshots`} class="inline-flex rounded-full border border-current/20 p-1">
         {sets.map((set, i) => (
           <button
@@ -36,17 +47,6 @@ const idBase = `shots-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
         ))}
       </div>
     </div>
-
-    {sets.map((set, i) => (
-      <div
-        role="tabpanel"
-        id={`${idBase}-panel-${i}`}
-        aria-labelledby={`${idBase}-tab-${i}`}
-        hidden={i !== 0}
-      >
-        <ScreenshotGallery screenshots={set.shots} frame={set.frame} title={title} />
-      </div>
-    ))}
   </screenshot-switcher>
 )}
 
