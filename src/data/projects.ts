@@ -77,8 +77,7 @@ export const projects: Project[] = [
       { src: "/projects/citrine/screenshots/08-hotel-booking.webp", label: "Hotel Booking" },
     ],
     logo: "/projects/citrine/logo.jpeg",
-    bg: "#BD7901",
-    textColor: "#FFFFFF",
+    bg: "#FFFFFF",
     tags: [],
     // Pulled from the App Store; the listing 404s.
   },
