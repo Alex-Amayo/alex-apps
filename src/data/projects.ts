@@ -56,7 +56,7 @@ export const projects: Project[] = [
       { frame: "web", src: "/projects/keylens/screenshots/web/03-remote.png", label: "Remote on the web" },
       { frame: "ios-phone", src: "/projects/keylens/screenshots/ios-phone/07-remote.png", label: "Remote on iPhone" },
     ],
-    bg: "#69C9C3",
+    bg: "#000000",
     textColor: "#FFFFFF",
     tags: [],
     appStore: "https://apps.apple.com/us/app/key-lens/id6761850903",
