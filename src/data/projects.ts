@@ -10,6 +10,8 @@ export interface Project {
   /** Phone screenshots. On a full-width tile they replace `image` with a
    *  scrolling strip under the text. */
   screenshots?: { src: string; label: string }[];
+  /** Device frame around each screenshot. Defaults to "ios-phone". */
+  screenshotFrame?: FrameName;
   /** true = "My Apps"; false = "Apps I've worked on" */
   owned?: boolean;
   /** App logo/icon, shown above the title */
@@ -53,13 +55,11 @@ export const projects: Project[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     logo: "/projects/keylens/logo.png",
     screenshots: [
-      { src: "/projects/keylens/screenshots/ios-phone/01-play-bank.png", label: "Chord Bank" },
-      { src: "/projects/keylens/screenshots/ios-phone/02-chords-diatonic.png", label: "Diatonic Chords" },
-      { src: "/projects/keylens/screenshots/ios-phone/03-chart.png", label: "Chart" },
-      { src: "/projects/keylens/screenshots/ios-phone/04-library.png", label: "Library" },
-      { src: "/projects/keylens/screenshots/ios-phone/05-midi.png", label: "MIDI" },
+      { src: "/projects/keylens/screenshots/ios-phone/04-library.png", label: "Home" },
       { src: "/projects/keylens/screenshots/ios-phone/06-scale.png", label: "Scale" },
+      { src: "/projects/keylens/screenshots/ios-phone/02-chords-diatonic.png", label: "Chords" },
       { src: "/projects/keylens/screenshots/ios-phone/07-remote.png", label: "Remote" },
+      { src: "/projects/keylens/screenshots/ios-phone/03-chart.png", label: "Chart" },
     ],
     bg: "#000000",
     textColor: "#FFFFFF",

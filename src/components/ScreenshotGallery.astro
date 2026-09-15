@@ -1,4 +1,7 @@
 ---
+import DeviceFrame from "./DeviceFrame.astro";
+import type { FrameName } from "../data/frames";
+
 interface Screenshot {
   src: string;
   label: string;
@@ -7,10 +10,12 @@ interface Screenshot {
 interface Props {
   screenshots: Screenshot[];
   title: string;
+  /** Device frame drawn around every screenshot. */
+  frame?: FrameName;
   class?: string;
 }
 
-const { screenshots, title, class: className = "" } = Astro.props;
+const { screenshots, title, frame = "ios-phone", class: className = "" } = Astro.props;
 ---
 
 {/* Lives inside a project tile and runs edge to edge across it: the scroller's
@@ -27,14 +32,12 @@ const { screenshots, title, class: className = "" } = Astro.props;
          rest, leaving the screenshots unevenly spaced. */
       screenshots.map((shot) => (
         <div class="slide shrink-0 basis-[60%] snap-start sm:w-[220px] sm:basis-auto lg:w-[240px]">
-          <div class="aspect-[750/1631] w-full overflow-hidden rounded-[1.6rem] bg-white shadow-xl shadow-black/15 ring-1 ring-black/5">
-            <img
-              src={shot.src}
-              alt={`${title} — ${shot.label}`}
-              loading="lazy"
-              class="h-full w-full object-cover"
-            />
-          </div>
+          <DeviceFrame
+            frame={frame}
+            src={shot.src}
+            alt={`${title} — ${shot.label}`}
+            class="w-full drop-shadow-xl"
+          />
           <p class="mt-3 text-center text-sm font-medium opacity-80">{shot.label}</p>
         </div>
       ))
