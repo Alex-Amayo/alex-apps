@@ -1,16 +1,27 @@
 ---
-interface Screenshot {
-  src: string;
-  label: string;
-}
+import DeviceFrame from "./DeviceFrame.astro";
+import { frames, type FrameName } from "../data/frames";
+import type { Screenshot } from "../data/projects";
 
 interface Props {
   screenshots: Screenshot[];
   title: string;
+  /** Device frame drawn around every screenshot. */
+  frame?: FrameName;
   class?: string;
 }
 
-const { screenshots, title, class: className = "" } = Astro.props;
+const { screenshots, title, frame = "ios-phone", class: className = "" } = Astro.props;
+
+// Every frame is sized to the same height, so switching a tile between phone
+// and web screenshots doesn't make it jump. The heights are an iPhone frame at
+// 220px (sm) and 240px (lg) wide. Below sm the slide is a share of the screen
+// instead: enough of a phone to leave the next one peeking in, or most of the
+// width for a landscape frame.
+const { width: frameWidth, height: frameHeight } = frames[frame];
+const slideWidth = (height: number) => `${Math.round((height * frameWidth) / frameHeight)}px`;
+const slideStyle = `--slide-sm:${slideWidth(450)};--slide-lg:${slideWidth(490)}`;
+const basis = frameWidth > frameHeight ? "basis-[88%]" : "basis-[60%]";
 ---
 
 {/* Lives inside a project tile and runs edge to edge across it: the scroller's
@@ -26,15 +37,16 @@ const { screenshots, title, class: className = "" } = Astro.props;
          height would let a long label stretch its own slide wider than the
          rest, leaving the screenshots unevenly spaced. */
       screenshots.map((shot) => (
-        <div class="slide shrink-0 basis-[60%] snap-start sm:w-[220px] sm:basis-auto lg:w-[240px]">
-          <div class="aspect-[750/1631] w-full overflow-hidden rounded-[1.6rem] bg-white shadow-xl shadow-black/15 ring-1 ring-black/5">
-            <img
-              src={shot.src}
-              alt={`${title} — ${shot.label}`}
-              loading="lazy"
-              class="h-full w-full object-cover"
-            />
-          </div>
+        <div
+          class={`slide shrink-0 snap-start sm:w-(--slide-sm) sm:basis-auto lg:w-(--slide-lg) ${basis}`}
+          style={slideStyle}
+        >
+          <DeviceFrame
+            frame={frame}
+            src={shot.src}
+            alt={`${title} — ${shot.label}`}
+            class="w-full drop-shadow-xl"
+          />
           <p class="mt-3 text-center text-sm font-medium opacity-80">{shot.label}</p>
         </div>
       ))

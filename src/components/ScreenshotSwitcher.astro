@@ -1,0 +1,85 @@
+---
+import ScreenshotGallery from "./ScreenshotGallery.astro";
+import type { ScreenshotSet } from "../data/projects";
+
+interface Props {
+  sets: ScreenshotSet[];
+  title: string;
+}
+
+const { sets, title } = Astro.props;
+
+// Ties each tab to its panel; one switcher per project tile.
+const idBase = `shots-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+{sets.length === 1 ? (
+  <ScreenshotGallery screenshots={sets[0].shots} frame={sets[0].frame} title={title} />
+) : (
+  <screenshot-switcher class="block">
+    {sets.map((set, i) => (
+      <div
+        role="tabpanel"
+        id={`${idBase}-panel-${i}`}
+        aria-labelledby={`${idBase}-tab-${i}`}
+        hidden={i !== 0}
+      >
+        <ScreenshotGallery screenshots={set.shots} frame={set.frame} title={title} />
+      </div>
+    ))}
+
+    {/* Segmented control under the strip's paging controls, drawn in
+        currentColor like them so it works on light and dark tiles alike. */}
+    <div class="mt-8 flex justify-center px-8">
+      <div role="tablist" aria-label={`${title} screenshots`} class="inline-flex rounded-full border border-current/20 p-1">
+        {sets.map((set, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`${idBase}-tab-${i}`}
+            aria-controls={`${idBase}-panel-${i}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+            class="rounded-full px-5 py-1.5 text-sm font-medium opacity-60 transition hover:opacity-100 aria-selected:bg-current/15 aria-selected:opacity-100"
+          >
+            {set.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </screenshot-switcher>
+)}
+
+<script>
+  class ScreenshotSwitcher extends HTMLElement {
+    connectedCallback() {
+      const tabs = Array.from(this.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+      const panels = Array.from(this.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+      const select = (index: number, focus = false) => {
+        tabs.forEach((tab, i) => {
+          const on = i === index;
+          tab.setAttribute("aria-selected", String(on));
+          tab.tabIndex = on ? 0 : -1;
+          panels[i].hidden = !on;
+        });
+        if (focus) tabs[index].focus();
+      };
+
+      tabs.forEach((tab, i) => {
+        tab.addEventListener("click", () => select(i));
+        // Arrow keys move between tabs, per the WAI-ARIA tabs pattern.
+        tab.addEventListener("keydown", (e) => {
+          const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!step) return;
+          e.preventDefault();
+          select((i + step + tabs.length) % tabs.length, true);
+        });
+      });
+    }
+  }
+
+  if (!customElements.get("screenshot-switcher")) {
+    customElements.define("screenshot-switcher", ScreenshotSwitcher);
+  }
+</script>

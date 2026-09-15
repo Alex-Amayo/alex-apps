@@ -1,3 +1,18 @@
+import type { FrameName } from "./frames";
+
+export interface Screenshot {
+  src: string;
+  label: string;
+}
+
+/** One strip of screenshots, all in the same device frame. */
+export interface ScreenshotSet {
+  /** Shown on the switch when a project has more than one set. */
+  name: string;
+  frame: FrameName;
+  shots: Screenshot[];
+}
+
 export interface Project {
   title: string;
   description: string;
@@ -5,9 +20,9 @@ export interface Project {
   subtitle?: string;
   /** Longer write-up shown in the "Learn more" modal. Blank lines split paragraphs. */
   longDescription?: string;
-  /** Phone screenshots. On a full-width tile they replace `image` with a
-   *  scrolling strip under the text. */
-  screenshots?: { src: string; label: string }[];
+  /** Framed screenshots, shown as a scrolling strip on a full-width tile. With
+   *  more than one set, a switch above the strip flips between them. */
+  screenshotSets?: ScreenshotSet[];
   /** true = "My Apps"; false = "Apps I've worked on" */
   owned?: boolean;
   /** App logo/icon, shown above the title */
@@ -16,12 +31,6 @@ export interface Project {
   image?: string;
   /** Let the screenshot bleed past the tile edge (default true) */
   imageBleed?: boolean;
-  /** Fill the tile's full height with the screenshot, cropping the sides
-   *  instead of fitting it inside an `imageAspect` box. Full-width tiles only. */
-  imageFullHeight?: boolean;
-  /** Which part of a full-height screenshot survives the side crop (CSS
-   *  object-position, e.g. "left top", "30% center"). Defaults to "left top". */
-  imagePosition?: string;
   /** CSS aspect-ratio for the screenshot's box (e.g. "1200 / 786"). Keeps card heights consistent; defaults to 1200 / 786. */
   imageAspect?: string;
   /** Tile background color */
@@ -50,9 +59,30 @@ export const projects: Project[] = [
     longDescription:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     logo: "/projects/keylens/logo.png",
-    image: "/projects/keylens/screenshot.png",
-    imageFullHeight: true,
-    bg: "#69C9C3",
+    screenshotSets: [
+      {
+        name: "Mobile",
+        frame: "ios-phone",
+        shots: [
+          { src: "/projects/keylens/screenshots/ios-phone/04-library.png", label: "Home" },
+          { src: "/projects/keylens/screenshots/ios-phone/06-scale.png", label: "Scale" },
+          { src: "/projects/keylens/screenshots/ios-phone/02-chords-diatonic.png", label: "Chords" },
+          { src: "/projects/keylens/screenshots/ios-phone/07-remote.png", label: "Remote" },
+          { src: "/projects/keylens/screenshots/ios-phone/03-chart.png", label: "Chart" },
+        ],
+      },
+      {
+        name: "Web",
+        frame: "web",
+        shots: [
+          { src: "/projects/keylens/screenshots/web/01-scale.png", label: "Scale" },
+          { src: "/projects/keylens/screenshots/web/02-chords.png", label: "Chords" },
+          { src: "/projects/keylens/screenshots/web/03-remote.png", label: "Remote" },
+          { src: "/projects/keylens/screenshots/web/04-chart.png", label: "Chart" },
+        ],
+      },
+    ],
+    bg: "#000000",
     textColor: "#FFFFFF",
     tags: [],
     appStore: "https://apps.apple.com/us/app/key-lens/id6761850903",
@@ -66,15 +96,21 @@ export const projects: Project[] = [
       "A credit card app for Citrine members with onboarding, spend tracking, statements, rewards, and push notifications.",
     longDescription:
       "I joined Citrine, a startup in New York, as a mobile engineer, helping launch their iOS app and giving members access to their credit accounts on mobile.\n\nStartups move fast. Every decision had to earn its place, and the work was finding the highest-leverage opportunities to improve the product.\n\nI built the analytics layer and spent real time in it, watching where people hesitated, where they dropped, and what they did instead of what we assumed they'd do. I brought those insights to product and marketing, working together to identify opportunities, prioritize optimizations, and measure their impact.",
-    screenshots: [
-      { src: "/projects/citrine/screenshots/01-welcome.webp", label: "Welcome" },
-      { src: "/projects/citrine/screenshots/02-home.webp", label: "Home" },
-      { src: "/projects/citrine/screenshots/03-card-page.webp", label: "Card Page" },
-      { src: "/projects/citrine/screenshots/04-community-and-messages.webp", label: "Community and Messages" },
-      { src: "/projects/citrine/screenshots/05-benefits.webp", label: "Benefits" },
-      { src: "/projects/citrine/screenshots/06-hotel-and-restaurant-benefits.webp", label: "Hotel and Restaurant Benefits" },
-      { src: "/projects/citrine/screenshots/07-browse-hotels-and-restaurants.webp", label: "Browse Hotels and Restaurants" },
-      { src: "/projects/citrine/screenshots/08-hotel-booking.webp", label: "Hotel Booking" },
+    screenshotSets: [
+      {
+        name: "Mobile",
+        frame: "ios-phone",
+        shots: [
+          { src: "/projects/citrine/screenshots/01-welcome.webp", label: "Welcome" },
+          { src: "/projects/citrine/screenshots/02-home.webp", label: "Home" },
+          { src: "/projects/citrine/screenshots/03-card-page.webp", label: "Card Page" },
+          { src: "/projects/citrine/screenshots/04-community-and-messages.webp", label: "Community and Messages" },
+          { src: "/projects/citrine/screenshots/05-benefits.webp", label: "Benefits" },
+          { src: "/projects/citrine/screenshots/06-hotel-and-restaurant-benefits.webp", label: "Hotel and Restaurant Benefits" },
+          { src: "/projects/citrine/screenshots/07-browse-hotels-and-restaurants.webp", label: "Browse Hotels and Restaurants" },
+          { src: "/projects/citrine/screenshots/08-hotel-booking.webp", label: "Hotel Booking" },
+        ],
+      },
     ],
     logo: "/projects/citrine/logo.jpeg",
     bg: "#FFFFFF",
