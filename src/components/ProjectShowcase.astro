@@ -1,36 +1,23 @@
 ---
 import ProjectModal from "./ProjectModal.astro";
 import ProjectLinks from "./ProjectLinks.astro";
-import ScreenshotGallery from "./ScreenshotGallery.astro";
-import DeviceFrame from "./DeviceFrame.astro";
-import { frames, type FrameName } from "../data/frames";
-
-interface Device {
-  frame: FrameName;
-  src: string;
-  label: string;
-}
+import ScreenshotSwitcher from "./ScreenshotSwitcher.astro";
+import type { ScreenshotSet } from "../data/projects";
 
 interface Props {
   title: string;
   description: string;
   subtitle?: string;
   longDescription?: string;
-  /** Phone screenshots. On a full-width tile they replace `image` with a
-   *  scrolling strip under the text. */
-  screenshots?: { src: string; label: string }[];
-  /** Device frame around each screenshot. Defaults to "ios-phone". */
-  screenshotFrame?: FrameName;
+  /** Framed screenshots. On a full-width tile they replace `image` with a
+   *  scrolling strip under the text; more than one set adds a switch. */
+  screenshotSets?: ScreenshotSet[];
   logo?: string;
   image?: string;
   imageAspect?: string;
   /** Screenshots bleed past the tile edge by default; set false to keep the
    *  image fully inside the padding (for framed or bordered art). */
   imageBleed?: boolean;
-  /** Two screenshots in device frames, shown in place of `image`: the first is
-   *  the large device at the back, the second sits in front of its lower-left
-   *  corner. */
-  devices?: [Device, Device];
   bg?: string;
   textColor?: string;
   logoInvert?: boolean;
@@ -55,13 +42,11 @@ const {
   description,
   subtitle,
   longDescription = "",
-  screenshots,
-  screenshotFrame,
+  screenshotSets,
   logo,
   image,
   imageAspect = "1200 / 786",
   imageBleed = true,
-  devices,
   bg = "#F5F5F6",
   textColor,
   logoInvert,
@@ -80,7 +65,7 @@ const isStack = layout === "stack";
 
 // A full-width tile with screenshots swaps the side-by-side image for a strip
 // that runs the width of the tile under the text.
-const hasGallery = !isStack && Boolean(screenshots?.length);
+const hasGallery = !isStack && Boolean(screenshotSets?.length);
 
 // One modal per project; the id ties the tile's button to its dialog.
 const modalId = `project-modal-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
@@ -90,19 +75,6 @@ const modalId = `project-modal-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
 const logoClass = showTitle
   ? "h-16 w-16 rounded-[22%] object-contain sm:h-20 sm:w-20"
   : "h-14 w-auto max-w-full object-contain sm:h-20";
-
-// Lay out the device pair in units of the composition's width: the back device
-// takes most of it from the top-right corner, and the front one stands on the
-// bottom edge, low enough to overlap the back device's lower-left corner.
-const BACK_WIDTH = 84;
-const FRONT_WIDTH = 28;
-const OVERHANG = 10;
-const deviceLayout = devices && (() => {
-  const [back, front] = devices.map((d) => frames[d.frame]);
-  const backHeight = BACK_WIDTH * (back.height / back.width);
-  const frontHeight = FRONT_WIDTH * (front.height / front.width);
-  return { aspect: `100 / ${Math.max(backHeight + OVERHANG, frontHeight)}` };
-})();
 
 const articleClass = hasGallery
   ? "flex h-full flex-col gap-10 overflow-hidden rounded-[28px] py-12 md:py-16"
@@ -181,22 +153,11 @@ const imageWrapClass = isStack
 
   </div>
 
-  {hasGallery && screenshots && (
-    <ScreenshotGallery screenshots={screenshots} frame={screenshotFrame} title={title} />
+  {hasGallery && screenshotSets && (
+    <ScreenshotSwitcher sets={screenshotSets} title={title} />
   )}
 
-  {devices && deviceLayout && !hasGallery && (
-    <div class="relative w-full" style={`aspect-ratio:${deviceLayout.aspect}`}>
-      <div class="absolute right-0 top-0 drop-shadow-xl" style={`width:${BACK_WIDTH}%`}>
-        <DeviceFrame frame={devices[0].frame} src={devices[0].src} alt={`${title} — ${devices[0].label}`} />
-      </div>
-      <div class="absolute bottom-0 left-0 drop-shadow-2xl" style={`width:${FRONT_WIDTH}%`}>
-        <DeviceFrame frame={devices[1].frame} src={devices[1].src} alt={`${title} — ${devices[1].label}`} />
-      </div>
-    </div>
-  )}
-
-  {image && !devices && !hasGallery && (
+  {image && !hasGallery && (
     <div class={imageWrapClass} style={`aspect-ratio:${imageAspect}`}>
       <img src={image} alt={title} loading="lazy" class="h-full w-full object-contain" />
     </div>
