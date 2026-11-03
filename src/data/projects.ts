@@ -52,7 +52,7 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "KeyLens",
+    title: "Key Lens",
     owned: true,
     description:
       "Play chords and scales. Connect to any DAW, synth, or groovebox over Bluetooth or USB.",
@@ -82,8 +82,7 @@ export const projects: Project[] = [
         ],
       },
     ],
-    bg: "#000000",
-    textColor: "#FFFFFF",
+    bg: "#FFFFFF",
     tags: [],
     appStore: "https://apps.apple.com/us/app/key-lens/id6761850903",
     playStore: "https://play.google.com/apps/testing/com.alexamayo.keylens",
