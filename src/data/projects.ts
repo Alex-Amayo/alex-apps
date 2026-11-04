@@ -114,7 +114,7 @@ export const projects: Project[] = [
     description:
       "Worked on the first Mobile App for Total Card (acquired by Vervent), bringing their web platform's credit card management features to iOS and Android.",
     longDescription:
-      "The web app already existed. My job was to put it in people's pockets.\n\nI joined Vervent in South Dakota, then still Total Card, as the team's first React Native engineer. I built the mobile app from the ground up, owning frontend architecture, native integrations, and the release pipeline.\n\nA lot of the work happened outside the editor. The app ran through compliance, product, and executive leadership as much as it ran through engineering.\n\n",
+      "A lot of the work happened outside the editor. The app ran through compliance, product, and executive leadership as much as it ran through engineering. I learnt a lot about developing apps in a regulated financial services environment.",
     logo: "/projects/vervent/logo.png",
     image: "/projects/vervent/screenshot.webp",
     imageAspect: "1200 / 680",
