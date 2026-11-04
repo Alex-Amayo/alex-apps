@@ -31,6 +31,22 @@ const linkClass = `inline-flex items-center gap-1.5 rounded-full border border-z
 ---
 
 <div class={rowClass}>
+  {web && (
+    <a
+      href={web}
+      target="_blank"
+      rel="noopener noreferrer"
+      class={linkClass}
+      data-ph-project={title}
+      data-ph-link="web"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      Website
+    </a>
+  )}
   {appStore && (
     <a
       href={appStore}
@@ -55,22 +71,6 @@ const linkClass = `inline-flex items-center gap-1.5 rounded-full border border-z
     >
       <img src="https://svgl.app/library/googleplay.svg" alt="" class="h-4 w-4" loading="lazy" />
       Google Play
-    </a>
-  )}
-  {web && (
-    <a
-      href={web}
-      target="_blank"
-      rel="noopener noreferrer"
-      class={linkClass}
-      data-ph-project={title}
-      data-ph-link="web"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      Website
     </a>
   )}
   {github && (
