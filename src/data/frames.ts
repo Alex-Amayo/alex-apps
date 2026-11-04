@@ -11,6 +11,13 @@ export interface Frame {
 }
 
 export const frames = {
+  // Same bezel and measured screen cutout as the Key Lens marketing site.
+  "keylens-phone": {
+    src: "/projects/keylens/marketing/frame-phone.png",
+    width: 600,
+    height: 1226,
+    screen: { x: 32.1, y: 30.8952, width: 535.26, height: 1164.087, radius: 76.81 },
+  },
   "ios-phone": {
     src: "/frames/ios-phone.png",
     width: 1066,

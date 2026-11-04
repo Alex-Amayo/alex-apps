@@ -54,31 +54,23 @@ export const projects: Project[] = [
   {
     title: "Key Lens",
     owned: true,
+    subtitle: "Music theory made easy!",
     description:
-      "Play chords and scales. Connect to any DAW, synth, or groovebox over Bluetooth or USB.",
+      "Play scales and chords effortlessly. Sequence chords, melody and bass MIDI tracks. Connect to hardware synths and instruments in your DAW over USB or Bluetooth.\n\nA C++ module owns musical timing while JavaScript sends edits and reads published state. Native Swift and Kotlin modules send MIDI to external devices on iOS and Android.",
     longDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Compose your next song. Record or sequence chords, melody and bass sections. Find your starting point with common chord progressions from multiple genres, then use arpeggios and strum to shape how your chords play.\n\nConnect to the rest of your setup. Use Key Lens as a MIDI controller over USB or Bluetooth on iOS and Android to play hardware synths or instruments in your DAW. The web version runs in your browser with piano sound.\n\nLearn to play your chords on piano with easy-to-read charts.",
     logo: "/projects/keylens/logo.png",
     screenshotSets: [
       {
         name: "Mobile",
-        frame: "ios-phone",
+        frame: "keylens-phone",
         shots: [
-          { src: "/projects/keylens/screenshots/ios-phone/04-library.png", label: "Home" },
-          { src: "/projects/keylens/screenshots/ios-phone/06-scale.png", label: "Scale" },
-          { src: "/projects/keylens/screenshots/ios-phone/02-chords-diatonic.png", label: "Chords" },
-          { src: "/projects/keylens/screenshots/ios-phone/07-remote.png", label: "Remote" },
-          { src: "/projects/keylens/screenshots/ios-phone/03-chart.png", label: "Chart" },
-        ],
-      },
-      {
-        name: "Web",
-        frame: "web",
-        shots: [
-          { src: "/projects/keylens/screenshots/web/01-scale.png", label: "Scale" },
-          { src: "/projects/keylens/screenshots/web/02-chords.png", label: "Chords" },
-          { src: "/projects/keylens/screenshots/web/03-remote.png", label: "Remote" },
-          { src: "/projects/keylens/screenshots/web/04-chart.png", label: "Chart" },
+          { src: "/projects/keylens/marketing/compose-chords.png", label: "Compose" },
+          { src: "/projects/keylens/marketing/progressions.png", label: "Chord progressions" },
+          { src: "/projects/keylens/marketing/strum.png", label: "Strum" },
+          { src: "/projects/keylens/marketing/midi-connection.png", label: "MIDI connections" },
+          { src: "/projects/keylens/marketing/midi-remote.png", label: "MIDI remote" },
+          { src: "/projects/keylens/marketing/chart.png", label: "Piano chord charts" },
         ],
       },
     ],
